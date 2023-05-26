@@ -95,7 +95,7 @@ class _ChatPageState extends State<ChatPage> {
 
       }
     });
-git
+
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       RemoteNotification notification = message.notification!;
       AndroidNotification android = message.notification!.android!;
