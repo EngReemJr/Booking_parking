@@ -1,6 +1,8 @@
+import 'package:chat_part/auth/providers/auth_ptoviders.dart';
 import 'package:chat_part/widgets/notification.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:provider/provider.dart';
 
 import 'chatPage.dart';
 
@@ -18,6 +20,9 @@ class _HomePageState extends State<HomePage> {
       _selectedIndex = index;
       _pageController.animateToPage(index,
           duration: Duration(milliseconds: 500), curve: Curves.easeOut);
+      if(index == 1){
+        Provider.of<AuthProvider>(context,listen: false).setNotificationCounter();
+      }
     });
   }
 
@@ -58,7 +63,7 @@ class _HomePageState extends State<HomePage> {
         selectedLabelStyle: TextStyle(fontWeight: FontWeight.w600),
         unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w600),
         type: BottomNavigationBarType.fixed,
-        items: const [
+        items:  [
           BottomNavigationBarItem(
             icon: Icon(Icons.message),
             label: "Chats",
@@ -66,14 +71,18 @@ class _HomePageState extends State<HomePage> {
           ),
           BottomNavigationBarItem(
             icon:
+                Provider.of<AuthProvider>(context).notification_counter >= 1 ?
                 badges.Badge(
                   child:Icon (Icons.notifications_active_sharp),
                     badgeContent: Text(
-                      '1',
+                      '${Provider.of<AuthProvider>(context).notification_counter}',
                       style: TextStyle(
                           color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
                     )
-                ),
+                )
+            :
+                Icon (Icons.notifications_active_sharp)
+             ,
 
             label: "Notifications",
 

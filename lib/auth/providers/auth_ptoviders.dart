@@ -30,6 +30,7 @@ class AuthProvider extends ChangeNotifier {
 
   static late  AnimationController controller ;
   bool isPlaying = false;
+  int notification_counter = 0;
   double progress = 1.0;
   List  notification_list = ['notification 1' , 'notification 2', 'notification 3'];
 
@@ -44,20 +45,20 @@ class AuthProvider extends ChangeNotifier {
       }
     });
   }
-  /*changeUserAdmin (bool value){
-    UserAdmin = value;
-    notifyListeners();
 
-  }*/
   changePlayingValue(bool newValue) {
     isPlaying = newValue;
     notifyListeners();
   }
   fill_notification_list(String newNotify){
     notification_list.add(newNotify);
-    print(newNotify);
+    notification_counter++;
     notifyListeners();
 
+  }
+  setNotificationCounter(){
+    notification_counter=0;
+    notifyListeners();
   }
 
   String get countText {
