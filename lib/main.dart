@@ -3,11 +3,12 @@ import 'dart:async';
 import 'dart:io';
 
 
-import 'package:chat_part/reposetories/FirebaseHelperNotification.dart';
+import 'package:chat_part/reposetories/firestoreHelper.dart';
 import 'package:chat_part/screens/HomePage.dart';
 import 'package:chat_part/screens/loginScreen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:chat_part/screens/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
@@ -28,14 +29,7 @@ import 'Reserve.dart';
 import 'Settings.dart';
 import 'abc.dart';
 import 'introductionScreen.dart';*/
-/*
-Future<dynamic>myBackgroundMessageHandler(RemoteMessage message) async{
-  print('onBackgoroud : ${message.notification?.title}/${message.notification?.body}/'
-      '${message.notification?.titleLocKey}'
-      );
-}
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-*/
+
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
@@ -44,7 +38,10 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 Future<void> main() async {
   // await GetStorage.init();
+
+
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -60,8 +57,6 @@ Future<void> main() async {
     badge: true,
     sound: true,
   );
-
-
   runApp(MyApp());
 }
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -93,8 +88,10 @@ class MyApp extends StatelessWidget {
     ],*/
     return ChangeNotifierProvider<AuthProvider>(
     create: (context) {
+      //return AuthProvider.authProvider;
       return AuthProvider();
     },
+
     child: AppInit());
   }
 
@@ -110,7 +107,7 @@ class AppInit extends StatelessWidget {
       themeMode: ThemeService().getThemeMode(),*/
       title: "flutter Login UI",
       debugShowCheckedModeBanner: false,
-      home: loginScreen()
+      home: SplachScreen()
       //HomePage()
       /*Activity(),
       routes: {

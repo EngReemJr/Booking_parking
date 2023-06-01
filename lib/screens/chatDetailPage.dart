@@ -18,6 +18,7 @@ import '../allConstants/color_constants.dart';
 import '../allConstants/firestore_constants.dart';
 import '../allConstants/size_constants.dart';
 import '../component/chatImage.dart';
+import '../reposetories/notificationHelper.dart';
 import '../reposetories/firestoreHelper.dart';
 import '../reposetories/storage_helper.dart';
 
@@ -212,7 +213,9 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                 ),
                 onSubmitted: (value) {
                   ChatHelper.chatHelper.onSendMessage( ChatHelper.chatHelper.textEditingController.text,MessageType.text , widget.peerId);
-                },
+
+
+                  },
               ),
             ),
             SizedBox(width: 15,),
@@ -232,8 +235,19 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
               ),
             ),
             FloatingActionButton(
-              onPressed: (){
+              onPressed: () async {
                 ChatHelper.chatHelper.onSendMessage(ChatHelper.chatHelper.textEditingController.text, MessageType.text , widget.peerId);
+
+                String token = await NotificationHelper.notificationHelper.getTokenFromFireStore(widget.peerId);
+
+                NotificationHelper.notificationHelper.sendPushMessage(
+                    token,
+                    ChatHelper.chatHelper.textEditingController.text,
+                    'New message from ${Provider.of<AuthProvider>(context,listen: false).loggedUser!.displayName }',
+                    Provider.of<AuthProvider>(context,listen: false).loggedUser!.id!
+                );
+
+
               },
               child: Icon(Icons.send,color: Colors.white,size: 18,),
               backgroundColor: Colors.blue,

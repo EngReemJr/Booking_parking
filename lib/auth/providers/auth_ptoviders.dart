@@ -1,10 +1,9 @@
-import 'dart:developer';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:string_validator/string_validator.dart';
-
 import '../../app_router/app_router.dart';
 import '../../models/chatUser.dart';
 import '../../reposetories/firestoreHelper.dart';
@@ -17,7 +16,6 @@ import '../../reposetories/authHelper.dart';
 class AuthProvider extends ChangeNotifier {
   GlobalKey<FormState> signInKey = GlobalKey();
   GlobalKey<FormState> signUpKey = GlobalKey();
- // bool UserAdmin = false;
   TextEditingController registerEmailController = TextEditingController();
   TextEditingController searchTextEditingController = TextEditingController();
   TextEditingController loginEmailController = TextEditingController();
@@ -27,12 +25,23 @@ class AuthProvider extends ChangeNotifier {
   late String email;
   late String password;
   ChatUser? loggedUser;
-
   static late  AnimationController controller ;
   bool isPlaying = false;
   int notification_counter = 0;
   double progress = 1.0;
-  List  notification_list = ['notification 1' , 'notification 2', 'notification 3'];
+  List  notification_list = [];
+
+  late SharedPreferences prefs  ;
+List <String >?tokens = [];
+  AuthProvider()  {
+  intialSharedPref();
+  getTokens();
+}
+
+intialSharedPref()async{
+  prefs = await SharedPreferences.getInstance();
+
+}
 
   IntilizeController(){
     controller.addListener(() {
@@ -44,6 +53,22 @@ class AuthProvider extends ChangeNotifier {
         isPlaying = false;
       }
     });
+
+
+
+  }
+
+  SaveMessageNot(String Id, int value)  {
+
+
+    prefs.setInt(Id, value);
+    notifyListeners();
+  }
+  int getMessageNot(String Id )  {
+
+    int intValue = prefs.getInt(Id)??0;
+
+    return intValue;
   }
 
   changePlayingValue(bool newValue) {
@@ -52,10 +77,19 @@ class AuthProvider extends ChangeNotifier {
   }
   fill_notification_list(String newNotify){
     notification_list.add(newNotify);
+
     notification_counter++;
     notifyListeners();
 
   }
+  /*fill_user_list(String idUser , int counterMsg){
+    messageNotification[idUser] = counterMsg;
+    print(messageNotification[idUser]);
+        notifyListeners();
+
+
+  }*/
+
   setNotificationCounter(){
     notification_counter=0;
     notifyListeners();
@@ -137,6 +171,10 @@ class AuthProvider extends ChangeNotifier {
     loggedUser!.id = id;
     notifyListeners();
   }
+  getTokens() async {
+    tokens = (await FirestoreHelper.firestoreHelper.getAllTokens());
+    notifyListeners();
+  }
 
   checkUser() async {
     String? userId = AuthHelper.authHelper.checkUser();
@@ -148,7 +186,6 @@ class AuthProvider extends ChangeNotifier {
       AppRouter.appRouter.goToWidgetAndReplace(loginScreen());
     }
   }
-
 
 
   signOut() async {

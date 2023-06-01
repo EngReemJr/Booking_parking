@@ -36,7 +36,7 @@ class _ActivityState extends State<Activity> with TickerProviderStateMixin {
       ),
     );
     myProvider = new AuthProvider();
-    myProvider.IntilizeController();
+   // AuthProvider.authProvider.IntilizeController();
 
   }
 

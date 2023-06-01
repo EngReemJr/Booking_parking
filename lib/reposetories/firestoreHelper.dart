@@ -1,4 +1,6 @@
 import 'dart:developer';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:chat_part/allConstants/all_constants.dart';
 import 'package:chat_part/models/chatUser.dart';
@@ -13,6 +15,7 @@ class FirestoreHelper {
 
   static FirestoreHelper firestoreHelper = FirestoreHelper._();
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+List tokens = [];
 
   //register
   addNewUser(ChatUser appUser) async {
@@ -42,13 +45,16 @@ class FirestoreHelper {
 
 
   Stream<QuerySnapshot> getFirestoreData(
+
       String collectionPath, int limit, String? textSearch) {
     if (textSearch?.isNotEmpty == true ) {
       return firestore
           .collection(collectionPath)
           .limit(limit)
           .where(FirestoreConstants.displayName,isEqualTo: textSearch!)
-          .snapshots();
+          .snapshots()
+
+      ;
 
     } else {
       return firestore
@@ -109,21 +115,51 @@ class FirestoreHelper {
       return false;
     }
   }
+*/
 
-  Future<List<Category>?> getAllCategories() async {
+  /*
+  SaveMessageNot(String Id, int value)  {
+
+    prefs.setInt(Id, value);
+  }
+  int getMessageNot(String Id , String type)  {
+   // Fluttertoast.showToast(msg: Id.toString() + ' id');
+    int intValue = prefs.getInt(Id)??0;
+    if(type == 'i'){
+      intValue = intValue +1;
+    }
+
+    return intValue;
+  }*/
+  Future<List<ChatUser>?> getAllUsers() async {
     try {
-      QuerySnapshot<Map<String, dynamic>> catsSnapshot =
-      await firestore.collection('categories').get();
-      List<Category> categories = catsSnapshot.docs.map((doc) {
-        Category category = Category.fromMap(doc.data());
-        category.id = doc.id;
-        return category;
+      QuerySnapshot<Map<String, dynamic>> userSnapshot =
+      await firestore.collection('Users').get();
+      List<ChatUser> users = userSnapshot.docs.map((doc) {
+        ChatUser cUser = ChatUser.fromMap(doc.data());
+        cUser.id = doc.id;
+        return cUser;
       }).toList();
-      return categories;
+      return users;
     } on Exception catch (e) {
       log(e.toString());
     }
-  }*/
+  }
+  Future<List<String>?> getAllTokens() async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> userSnapshot =
+      await firestore.collection('UserTokens').get();
+
+      List<String> tokens = userSnapshot.docs.map((doc) {
+
+        String uToken = doc.data()['token'];
+        return uToken;
+      }).toList();
+      return tokens;
+    } on Exception catch (e) {
+      log(e.toString());
+    }
+  }
 /*
   Future<bool?> updateCategory(Category category) async {
     try {

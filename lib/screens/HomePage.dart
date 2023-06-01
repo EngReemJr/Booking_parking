@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
 
       //ChatPage(),
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.purple,
+        selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.grey.shade600,
         selectedLabelStyle: TextStyle(fontWeight: FontWeight.w600),
         unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w600),

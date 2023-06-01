@@ -41,6 +41,8 @@ class ChatHelper {
           content, type, groupChatId, AuthHelper.authHelper.checkUser()!, peerId);
       scrollController.animateTo(0,
           duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
+
+
     } else {
       Fluttertoast.showToast(
           msg: 'Nothing to send', backgroundColor: Colors.grey);
