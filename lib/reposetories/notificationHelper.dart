@@ -44,7 +44,7 @@ return token;
           body: jsonEncode(
               <String , dynamic>{
                 'notification' :<String , dynamic>{
-                  'body' : '$body@$id',
+                  'body' : '$body%$id',
                   'title' : '$title'
                 },
                 'priority' : 'high',

@@ -87,12 +87,7 @@ class _HomePageState extends State<HomePage> {
             label: "Notifications",
 
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.logout_rounded),
-            label: "log out",
-
-
-          ),
+          
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,

@@ -12,12 +12,16 @@ class notification_list extends StatelessWidget{
          itemCount: Provider.of<AuthProvider>(context).notification_list.length,
          itemBuilder: (BuildContext context, int index) {
            return ListTile(
-               leading: const Icon(Icons.notifications_active),
-               trailing:  Text(
-                 Provider.of<AuthProvider>(context ).notification_list[index].toString(),
-                 style: TextStyle(color: Colors.green, fontSize: 15),
+               trailing: const Icon(Icons.notifications_active),
+               leading:   Text(
+                'New Notification',
+                   style: TextStyle( fontSize: 10),
+                 textAlign: TextAlign.center,
                ),
-               title: Text("List item $index"));
+               title: Text(
+                 Provider.of<AuthProvider>(context ).notification_list[index].toString(),
+                 style: TextStyle(color: Colors.blue, fontSize: 18),
+               ));
          }),
    );
 

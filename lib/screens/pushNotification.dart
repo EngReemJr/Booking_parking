@@ -157,14 +157,9 @@ formWidget.add(SizedBox(height: MediaQuery.of(context).size.height*0.50,));
     formWidget.add(ElevatedButton(
         child: const Text('Push Notification'), onPressed: (){
       onPressedSubmit();
-          //NotificationHelper.notificationHelper.sendPushMessage(token, body, title, id)
-/*
-        Provider.of<AuthProvider>(context,listen: false).tokens?.forEach((element) {
-          NotificationHelper.notificationHelper.sendPushMessage(element, _body, _title, '');
 
-        });
 
-*/
+
 
     }));
 

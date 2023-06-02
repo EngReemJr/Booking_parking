@@ -12,6 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:provider/provider.dart';
 import '../allConstants/firestore_constants.dart';
@@ -71,8 +72,8 @@ class _ChatPageState extends State<ChatPage> {
 
   void initState() {
     super.initState();
-    var initializationSettingsAndroid =
-    new AndroidInitializationSettings('ic_launcher');
+  /*  var initializationSettingsAndroid =
+    new AndroidInitializationSettings('ic_launcher');*/
     var initialzationSettingsAndroid =
     AndroidInitializationSettings('@mipmap/ic_launcher');
     var initializationSettings =
@@ -86,27 +87,31 @@ class _ChatPageState extends State<ChatPage> {
         flutterLocalNotificationsPlugin.show(
             notification.hashCode,
             notification.title,
-            notification.body!.split('@')[0],
+          // 'click to view',
+            notification.body!
+               .split('%')[0].replaceAll('%', ''),
             NotificationDetails(
               android: AndroidNotificationDetails(
                 channel.id,
                 channel.name,
               //  channel.description,
-                color: Colors.orange,
+              //  color: Colors.orange,
                 // TODO add a proper drawable resource to android, for now using
                 //      one that already exists in example app.
-                icon: "@drawable/ic_launcher.png",
+              //  icon: "@drawable/ic_launcher",
               ),
             ));
 
        if (notification.title!.contains('New message')){
-          messageCount = Provider.of<AuthProvider>(context,listen: false).getMessageNot(notification.body!.split('@')[1]);
-          Provider.of<AuthProvider>(context,listen: false).SaveMessageNot(notification.body!.split('@')[1], messageCount+1);
-        }
+          messageCount = Provider.of<AuthProvider>(context,listen: false).getMessageNot(notification.body!.split('%')[1]);
+          Provider.of<AuthProvider>(context,listen: false).SaveMessageNot(notification.body!.split('%')[1], messageCount+1);
+
+       }
         else{
           Provider.of<AuthProvider>(context,listen: false).fill_notification_list(notification.title!);
 
         }
+
 
 
       }
@@ -121,18 +126,19 @@ class _ChatPageState extends State<ChatPage> {
            context: context,
             builder: (_) {
               return AlertDialog(
-                title: Text(notification.title!),
-                content: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [Text(notification.body!)],
-                  ),
-                ),
+                title: Text(notification.title! +'  welcomee'),
+                content:
+
+                      Text(notification.body!.split('%')[0].replaceAll('%', ''))
+
               );
-            }, );
+
+            },
+        );
+
         if (notification.title!.contains('New message')){
-          messageCount = Provider.of<AuthProvider>(context,listen: false).getMessageNot(notification.body!.split('@')[1]);
-          Provider.of<AuthProvider>(context,listen: false).SaveMessageNot(notification.body!.split('@')[1], messageCount+1);
+          messageCount = Provider.of<AuthProvider>(context,listen: false).getMessageNot(notification.body!.split('%')[1]);
+          Provider.of<AuthProvider>(context,listen: false).SaveMessageNot(notification.body!.split('%')[1], messageCount+1);
 
         }
         else{
@@ -157,6 +163,11 @@ class _ChatPageState extends State<ChatPage> {
          child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                provider.loggedUser==null?
+                Center(
+                  child: CircularProgressIndicator(),
+                )
+                    :
                 SafeArea(
                   child: Padding(
                     padding: EdgeInsets.only(left: 16, right: 16, top: 10),
@@ -166,8 +177,10 @@ class _ChatPageState extends State<ChatPage> {
                         ElevatedButton(onPressed: () {
                          provider.signOut();
                         }, child: Icon(Icons.logout)),
+
                         const Text("Conversations", style: TextStyle(
                             fontSize: 32, fontWeight: FontWeight.bold),),
+
                         provider.loggedUser!.isAdmin?
                         Container(
                           padding: EdgeInsets.only(
