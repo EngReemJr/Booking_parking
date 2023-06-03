@@ -3,10 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-/*
+
 import 'package:flutter_credit_card/credit_card_model.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
-*/
+
 class DemoApp extends StatefulWidget {
   @override
   _DemoAppState createState() => _DemoAppState();
@@ -19,7 +19,7 @@ class _DemoAppState extends State<DemoApp> {
   String expiryDate = '';
   bool showBackView = false;
 
- /* void onCreditCardModel(CreditCardModel creditCardModel) {
+ void onCreditCardModel(CreditCardModel creditCardModel) {
     setState(() {
       cardNumber = creditCardModel.cardNumber;
       cardHolderName = creditCardModel.cardHolderName;
@@ -27,7 +27,7 @@ class _DemoAppState extends State<DemoApp> {
       cvvNumber = creditCardModel.cvvCode;
       showBackView = creditCardModel.isCvvFocused;
     });
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +71,7 @@ class _DemoAppState extends State<DemoApp> {
             SizedBox(
               height: 10,
             ),
-           /* CreditCardWidget(
+            CreditCardWidget(
               cardNumber: cardNumber,
               expiryDate: expiryDate,
               height: 210,
@@ -86,10 +86,10 @@ class _DemoAppState extends State<DemoApp> {
               ),
               animationDuration: Duration(milliseconds: 1200),
               onCreditCardWidgetChange: (CreditCardBrand) {},
-            ),*/
+            ),
             Expanded(
               child: SingleChildScrollView(
-        /*  child:
+        child:
             CreditCardForm(
                   onCreditCardModelChange: onCreditCardModel,
                   cursorColor: Colors.red,
@@ -99,7 +99,7 @@ class _DemoAppState extends State<DemoApp> {
                   expiryDate: '',
                   cvvCode: '',
                   formKey: GlobalKey(),
-                ),*/
+                ),
               ),
             ),
             Container(
@@ -112,7 +112,8 @@ class _DemoAppState extends State<DemoApp> {
                           provider.changePlayingValue(false);
                       } else {
                         AuthProvider.controller.reverse(
-                            from: AuthProvider.controller.value == 0 ? 1.0 : AuthProvider.controller.value);
+                            from: AuthProvider.controller.value == 0 ? 1.0 :
+                            AuthProvider.controller.value);
                         provider.changePlayingValue(true);                      }
                       
                     },

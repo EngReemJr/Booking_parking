@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:chat_part/auth/MongoDbCon.dart';
+import 'package:chat_part/models/BarkingModel.dart';
 import 'package:chat_part/models/chatUser.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
@@ -32,17 +35,16 @@ try{
 //Fluttertoast.showToast(msg: result.toString());
 
   }
-  /*
-  Future<String?> signIn(String email, String password) async {
-    try {
-    getUser(email,password);
-    return userCredential.user?.uid;
-    } on Exception catch (e) {
-      AppRouter.appRouter
-          .showCustomDialoug('Error in Authentication', e.toString());
-    }
-  }*/
 
+
+  Future<List<Map<String, dynamic>>?> getAllParkings() async {
+    try {
+      Future<List<Map<String, dynamic>>> ParkDocument = MongoDbCon.mongoDbCon.parkingCollection.find().toList();
+      return ParkDocument;
+    } on Exception catch (e) {
+      log(e.toString());
+    }
+  }
 
 
 }

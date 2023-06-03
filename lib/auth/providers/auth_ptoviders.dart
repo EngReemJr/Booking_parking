@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:string_validator/string_validator.dart';
 import '../../app_router/app_router.dart';
+import '../../models/BarkingModel.dart';
 import '../../models/chatUser.dart';
 import '../../reposetories/firestoreHelper.dart';
 import '../../reposetories/storage_helper.dart';
@@ -30,26 +31,30 @@ class AuthProvider extends ChangeNotifier {
   late String password;
   ChatUser? loggedUser;
   List<Map<String, dynamic>>? DbloginUser;
+  List<Map<String, dynamic>>? AllParkings;
   late ChatUser? DbloggedUser;
-  static late  AnimationController controller ;
+  static late AnimationController controller;
+
   bool isPlaying = false;
   int notification_counter = 0;
   double progress = 1.0;
-  List  notification_list = [];
+  List notification_list = [];
 
-  late SharedPreferences prefs  ;
-List <String >?tokens = [];
-  AuthProvider()  {
-  intialSharedPref();
-  getTokens();
-}
+  late SharedPreferences prefs;
 
-intialSharedPref()async{
-  prefs = await SharedPreferences.getInstance();
+  List <String>?tokens = [];
 
-}
+  AuthProvider() {
+    intialSharedPref();
+    getTokens();
+    getAllParkings();
+  }
 
-  IntilizeController(){
+  intialSharedPref() async {
+    prefs = await SharedPreferences.getInstance();
+  }
+
+  IntilizeController() {
     controller.addListener(() {
       notify();
       if (controller.isAnimating) {
@@ -57,22 +62,18 @@ intialSharedPref()async{
       } else {
         progress = 1.0;
         isPlaying = false;
+        notifyListeners();
       }
     });
-
-
-
   }
 
-  SaveMessageNot(String Id, int value)  {
-
-
+  SaveMessageNot(String Id, int value) {
     prefs.setInt(Id, value);
     notifyListeners();
   }
-  int getMessageNot(String Id )  {
 
-    int intValue = prefs.getInt(Id)??0;
+  int getMessageNot(String Id) {
+    int intValue = prefs.getInt(Id) ?? 0;
 
     return intValue;
   }
@@ -81,33 +82,38 @@ intialSharedPref()async{
     isPlaying = newValue;
     notifyListeners();
   }
-  fill_notification_list(String newNotify){
+
+  fill_notification_list(String newNotify) {
     notification_list.add(newNotify);
 
     notification_counter++;
     notifyListeners();
-
   }
 
 
-  setNotificationCounter(){
-    notification_counter=0;
+  setNotificationCounter() {
+    notification_counter = 0;
     notifyListeners();
   }
 
   String get countText {
     Duration count = controller.duration! * controller.value;
     return controller.isDismissed
-        ? '${controller.duration!.inHours}:${(controller.duration!.inMinutes % 60).toString().padLeft(2, '0')}:${(controller.duration!.inSeconds % 60).toString().padLeft(2, '0')}'
-        : '${count.inHours}:${(count.inMinutes % 60).toString().padLeft(2, '0')}:${(count.inSeconds % 60).toString().padLeft(2, '0')}';
+        ? '${controller.duration!.inHours}:${(controller.duration!.inMinutes %
+        60).toString().padLeft(2, '0')}:${(controller.duration!.inSeconds % 60)
+        .toString()
+        .padLeft(2, '0')}'
+        : '${count.inHours}:${(count.inMinutes % 60).toString().padLeft(
+        2, '0')}:${(count.inSeconds % 60).toString().padLeft(2, '0')}';
   }
+
   void notify() {
     if (countText == '0:00:00') {
       //FlutterRingtonePlayer.playNotification();
     }
   }
 
-    String? emailValidation(String email) {
+  String? emailValidation(String email) {
     if (email == null || email.isEmpty) {
       return "Required field";
     } else if (!(isEmail(email))) {
@@ -123,6 +129,7 @@ intialSharedPref()async{
       return 'Error, the password must be larger than 6 letters';
     }
   }
+
   String? passwordConfirm(String password) {
     if (password == null || password.isEmpty) {
       return "Required field";
@@ -157,17 +164,19 @@ intialSharedPref()async{
   DbsignIn() async {
     if (signInKey.currentState!.validate()) {
       signInKey.currentState!.save();
-      DbloginUser = await DbHelper.dbHelper.getUser(loginEmailController.text, passwordLoginController.text);
+      DbloginUser = await DbHelper.dbHelper.getUser(
+          loginEmailController.text, passwordLoginController.text);
     }
     notifyListeners();
   }
-  DbcheckUser(List<ChatUser> loginUser){
-    if(loginUser.isNotEmpty){
-    DbloggedUser = loginUser.elementAt(0);
-    print('DbloggedUser = '+ DbloggedUser!.displayName!);
+
+  DbcheckUser(List<ChatUser> loginUser) {
+    if (loginUser.isNotEmpty) {
+      DbloggedUser = loginUser.elementAt(0);
+      print('DbloggedUser = ' + DbloggedUser!.displayName!);
     }
-    else{
-      DbloggedUser=null;
+    else {
+      DbloggedUser = null;
     }
     notifyListeners();
   }
@@ -175,24 +184,24 @@ intialSharedPref()async{
 
   SignUp() async {
     if (signUpKey.currentState!.validate()) {
-     // AppRouter.appRouter.showLoadingDialoug();
+      // AppRouter.appRouter.showLoadingDialoug();
       String? result = await AuthHelper.authHelper.signUp(
           registerEmailController.text, passwordRegisterController.text);
       if (result != null) {
         FirestoreHelper.firestoreHelper.addNewUser(ChatUser(
-            id: result,
-            email: registerEmailController.text,
-            isAdmin: false,
-            imageUrl: 'https://img.freepik.com/premium-vector/little-kid-avatar-profile_18591-50926.jpg?w=740',
-            displayName: userNameController.text,
-            ));
+          id: result,
+          email: registerEmailController.text,
+          isAdmin: false,
+          imageUrl: 'https://img.freepik.com/premium-vector/little-kid-avatar-profile_18591-50926.jpg?w=740',
+          displayName: userNameController.text,
+        ));
         Fluttertoast.showToast(msg: 'Register Completed');
         // AppRouter.appRouter.goToWidgetAndReplace(MainScreen());
 
 
       }
-     // AppRouter.appRouter.goToWidgetAndReplace(SignUpScreen());
-    //  AppRouter.appRouter.hideDialoug();
+      // AppRouter.appRouter.goToWidgetAndReplace(SignUpScreen());
+      //  AppRouter.appRouter.hideDialoug();
     }
   }
 
@@ -201,6 +210,7 @@ intialSharedPref()async{
     loggedUser!.id = id;
     notifyListeners();
   }
+
   getTokens() async {
     tokens = (await FirestoreHelper.firestoreHelper.getAllTokens());
     notifyListeners();
@@ -217,16 +227,23 @@ intialSharedPref()async{
     }
   }
 
+  getAllParkings() async {
+    AllParkings = await DbHelper.dbHelper.getAllParkings();
+    print( 'My Park Name  '+ AllParkings![0]['name']);
+    notifyListeners();
+  }
 
   signOut() async {
-    await AppRouter.appRouter.goToWidgetAndReplace(loginScreen());
-    await AuthHelper.authHelper.signOut();
+    try {
+      await AppRouter.appRouter.goToWidgetAndReplace(loginScreen());
+      await AuthHelper.authHelper.signOut();
 
-    DbcheckUser([]);
-    DbloginUser = [];
+      DbcheckUser([]);
+      DbloginUser = [];
+    }
+    catch (e) {
 
-
-
+    }
   }
 
   uploadNewFile() async {

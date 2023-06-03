@@ -69,7 +69,7 @@ class SettingsState extends State<Settings> {
 
                         image: DecorationImage(image: NetworkImage(
 
-                           provider.DbloggedUser!.imageUrl!)
+                           provider.DbloggedUser!.imageUrl!??'')
 
                         )),
                   ),
@@ -98,11 +98,11 @@ class SettingsState extends State<Settings> {
                 height: 30,
               ),
               Container(child: buildTextField("Full Name",
-                  provider.DbloggedUser!.displayName!
+                  provider.DbloggedUser!.displayName!??'myName'
 
                   , false)),
               buildTextField("Email",
-                provider.DbloggedUser!.email!,
+                provider.DbloggedUser!.email!??'myName@gmail.com',
 
                   false),
               //buildTextField("password", "********", true),
@@ -212,9 +212,13 @@ class SettingsState extends State<Settings> {
                 _currentIndex = index;
               });
               break;
-          /*case 3:
+              case 3:
+
               Navigator.pushNamed(context, '/Settings');
-              break;*/
+              setState(() {
+                _currentIndex = index;
+              });
+              break;
           }
         },
       ),

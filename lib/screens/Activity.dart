@@ -75,7 +75,7 @@ class _ActivityState extends State<Activity> with TickerProviderStateMixin {
                 Container(
                   margin: EdgeInsets.only(bottom: 390),
                   child: Text(
-                    "User Name",
+                    provider.DbloggedUser!.displayName??"User Name",
                     style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -156,7 +156,9 @@ class _ActivityState extends State<Activity> with TickerProviderStateMixin {
 
                   },
                   child: RoundButton(
-                    icon: provider.isPlaying == true ? Icons.pause : Icons.play_arrow,
+
+                    icon: provider.isPlaying == true ? Icons.pause :
+                    Icons.play_arrow,
                   ),
                 ),
                 GestureDetector(

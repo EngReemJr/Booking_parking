@@ -7,6 +7,8 @@ import 'package:chat_part/auth/MongoDbCon.dart';
 import 'package:chat_part/reposetories/firestoreHelper.dart';
 import 'package:chat_part/screens/Activity.dart';
 import 'package:chat_part/screens/HomePage.dart';
+import 'package:chat_part/screens/Park.dart';
+import 'package:chat_part/screens/PaymentPage.dart';
 import 'package:chat_part/screens/Settings.dart';
 import 'package:chat_part/screens/loginScreen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -116,11 +118,11 @@ class AppInit extends StatelessWidget {
       //HomePage()
       //Activity(),
       routes: {
-        //'/second': (context) => DemoApp(),
+        '/second': (context) => DemoApp(),
         '/Settings': (context) => Settings(),
         '/Activity': (context) => Activity(),
-        '/ChatPage' :(context) =>HomePage()
-       // '/Park': (context) => Park(),
+        '/ChatPage' :(context) =>HomePage(),
+        '/Park': (context) => Park(),
        // '/MyOrderScreen': (context) => MyOrderScreen(),
 
       },
