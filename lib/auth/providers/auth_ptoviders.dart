@@ -1,4 +1,7 @@
 import 'dart:io';
+import 'package:chat_part/reposetories/DbHelper.dart';
+import 'package:chat_part/screens/Settings.dart';
+import 'package:chat_part/screens/SignUpScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
@@ -21,10 +24,13 @@ class AuthProvider extends ChangeNotifier {
   TextEditingController loginEmailController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
   TextEditingController passwordRegisterController = TextEditingController();
+  TextEditingController ConpasswordRegisterController = TextEditingController();
   TextEditingController passwordLoginController = TextEditingController();
   late String email;
   late String password;
   ChatUser? loggedUser;
+  List<Map<String, dynamic>>? DbloginUser;
+  late ChatUser? DbloggedUser;
   static late  AnimationController controller ;
   bool isPlaying = false;
   int notification_counter = 0;
@@ -82,13 +88,7 @@ intialSharedPref()async{
     notifyListeners();
 
   }
-  /*fill_user_list(String idUser , int counterMsg){
-    messageNotification[idUser] = counterMsg;
-    print(messageNotification[idUser]);
-        notifyListeners();
 
-
-  }*/
 
   setNotificationCounter(){
     notification_counter=0;
@@ -123,6 +123,14 @@ intialSharedPref()async{
       return 'Error, the password must be larger than 6 letters';
     }
   }
+  String? passwordConfirm(String password) {
+    if (password == null || password.isEmpty) {
+      return "Required field";
+    }
+    else if (password != passwordRegisterController.text) {
+      return 'Error, the password must be the same';
+    }
+  }
 
   String? requiredValidation(String content) {
     if (content == null || content.isEmpty) {
@@ -141,14 +149,33 @@ intialSharedPref()async{
         await FirestoreHelper.firestoreHelper.getUserFromFirestore(userId);
         getUser(userId);
         notifyListeners();
-        AppRouter.appRouter.goToWidgetAndReplace(HomePage());
+        AppRouter.appRouter.goToWidgetAndReplace(Settings());
       }
     }
   }
 
+  DbsignIn() async {
+    if (signInKey.currentState!.validate()) {
+      signInKey.currentState!.save();
+      DbloginUser = await DbHelper.dbHelper.getUser(loginEmailController.text, passwordLoginController.text);
+    }
+    notifyListeners();
+  }
+  DbcheckUser(List<ChatUser> loginUser){
+    if(loginUser.isNotEmpty){
+    DbloggedUser = loginUser.elementAt(0);
+    print('DbloggedUser = '+ DbloggedUser!.displayName!);
+    }
+    else{
+      DbloggedUser=null;
+    }
+    notifyListeners();
+  }
+
+
   SignUp() async {
     if (signUpKey.currentState!.validate()) {
-      AppRouter.appRouter.showLoadingDialoug();
+     // AppRouter.appRouter.showLoadingDialoug();
       String? result = await AuthHelper.authHelper.signUp(
           registerEmailController.text, passwordRegisterController.text);
       if (result != null) {
@@ -159,10 +186,13 @@ intialSharedPref()async{
             imageUrl: 'https://img.freepik.com/premium-vector/little-kid-avatar-profile_18591-50926.jpg?w=740',
             displayName: userNameController.text,
             ));
+        Fluttertoast.showToast(msg: 'Register Completed');
         // AppRouter.appRouter.goToWidgetAndReplace(MainScreen());
-        // AppRouter.appRouter.hideDialoug();
+
 
       }
+     // AppRouter.appRouter.goToWidgetAndReplace(SignUpScreen());
+    //  AppRouter.appRouter.hideDialoug();
     }
   }
 
@@ -181,7 +211,7 @@ intialSharedPref()async{
 
     if (userId != null) {
       getUser(userId);
-      AppRouter.appRouter.goToWidgetAndReplace(HomePage());
+      AppRouter.appRouter.goToWidgetAndReplace(Settings());
     } else {
       AppRouter.appRouter.goToWidgetAndReplace(loginScreen());
     }
@@ -189,8 +219,14 @@ intialSharedPref()async{
 
 
   signOut() async {
+    await AppRouter.appRouter.goToWidgetAndReplace(loginScreen());
     await AuthHelper.authHelper.signOut();
-    AppRouter.appRouter.goToWidgetAndReplace(loginScreen());
+
+    DbcheckUser([]);
+    DbloginUser = [];
+
+
+
   }
 
   uploadNewFile() async {

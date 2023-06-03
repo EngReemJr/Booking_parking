@@ -160,6 +160,7 @@ class _ChatPageState extends State<ChatPage> {
         body:
 
        SafeArea(
+         
          child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -169,55 +170,57 @@ class _ChatPageState extends State<ChatPage> {
                 )
                     :
                 SafeArea(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 16, right: 16, top: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        ElevatedButton(onPressed: () {
-                         provider.signOut();
-                        }, child: Icon(Icons.logout)),
+                  child: Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 16, right: 16, top: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          ElevatedButton(onPressed: () {
+                           Navigator.pop(context);
+                          }, child: Icon(Icons.arrow_back_outlined)),
 
-                        const Text("Conversations", style: TextStyle(
-                            fontSize: 32, fontWeight: FontWeight.bold),),
+                          const Text("Conversations", style: TextStyle(
+                              fontSize: 32, fontWeight: FontWeight.bold),),
 
-                        provider.loggedUser!.isAdmin?
-                        Container(
-                          padding: EdgeInsets.only(
-                              left: 8, right: 8, top: 2, bottom: 2),
-                          height: 30,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: Colors.blueGrey[50],
-                          ),
+                          provider.loggedUser!.isAdmin?
+                          Container(
+                            padding: EdgeInsets.only(
+                                left: 8, right: 8, top: 2, bottom: 2),
+                            height: 30,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: Colors.blueGrey[50],
+                            ),
 
-                           child: GestureDetector(
-                             onTap: (){
-                               AppRouter.appRouter.goToWidget(PushNotofication(title: 'Notify User',));
-                             },
-                             child: badges.Badge(
-                                  badgeAnimation: badges.BadgeAnimation.scale(),
-                                  badgeStyle: badges.BadgeStyle(
-                                    shape: badges.BadgeShape.circle,
-                                    badgeGradient: badges.BadgeGradient.linear(
-                                      colors: [
-                                        Colors.blue,
-                                        Colors.blueGrey,
-                                      ],
+                             child: GestureDetector(
+                               onTap: (){
+                                 AppRouter.appRouter.goToWidget(PushNotofication(title: 'Notify User',));
+                               },
+                               child: badges.Badge(
+                                    badgeAnimation: badges.BadgeAnimation.scale(),
+                                    badgeStyle: badges.BadgeStyle(
+                                      shape: badges.BadgeShape.circle,
+                                      badgeGradient: badges.BadgeGradient.linear(
+                                        colors: [
+                                          Colors.blue,
+                                          Colors.blueGrey,
+                                        ],
+                                      ),
                                     ),
-                                  ),
 
 
-                                  child: Icon(Icons.notifications),
-                               ),
-                           ),
+                                    child: Icon(Icons.notifications),
+                                 ),
+                             ),
 
-                        ):
-                        SizedBox.shrink()
-                        ,
+                          ):
+                          SizedBox.shrink()
+                          ,
 
 
-                        ],
+                          ],
+                      ),
                     ),
                   ),
                 ),
@@ -272,66 +275,69 @@ class _ChatPageState extends State<ChatPage> {
                    Center(
                   child: CircularProgressIndicator(),
       )                      :
-                    StreamBuilder<QuerySnapshot>(
-                      stream: FirestoreHelper.firestoreHelper.getFirestoreData(
-                          FirestoreConstants.pathUserCollection,
-                          _limit,
-                          _textSearch),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<QuerySnapshot> snapshot) {
-                        if (snapshot.hasData) {
-                          if ((snapshot.data?.docs.length ?? 0) > 0 && provider.loggedUser!.isAdmin) {
-                            return ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: snapshot.data!.docs.length,
-                              itemBuilder: (context, index) =>
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height*0.7,
+                      child: StreamBuilder<QuerySnapshot>(
+                        stream: FirestoreHelper.firestoreHelper.getFirestoreData(
+                            FirestoreConstants.pathUserCollection,
+                            _limit,
+                            _textSearch),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (snapshot.hasData) {
+                            if ((snapshot.data?.docs.length ?? 0) > 0 && provider.loggedUser!.isAdmin) {
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: snapshot.data!.docs.length,
+                                itemBuilder: (context, index) =>
 
-                                  buildItem(
-                                  context, snapshot.data?.docs[index])
-                              ,
-                              controller: scrollController,
-                              //separatorBuilder:
-                              //    (BuildContext context, int index) =
-                              //    const Divider(),
-                            );
-                          }
-                          else if((snapshot.data?.docs.length ?? 0) > 0 && !(provider.loggedUser!.isAdmin)){
+                                    buildItem(
+                                    context, snapshot.data?.docs[index])
+                                ,
+                                controller: scrollController,
+                                //separatorBuilder:
+                                //    (BuildContext context, int index) =
+                                //    const Divider(),
+                              );
+                            }
+                            else if((snapshot.data?.docs.length ?? 0) > 0 && !(provider.loggedUser!.isAdmin)){
 
-                            return ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: snapshot.data!.docs.length,
+                              return ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: snapshot.data!.docs.length,
 
-                          itemBuilder:
+                            itemBuilder:
 
-                              (context, index) =>
+                                (context, index) =>
 
-                              (ChatUser.fromDocument(snapshot.data!.docs[index])).isAdmin?
-                           buildItem(
-                           context, snapshot.data?.docs[index]
-                          )
-                                   :
-                              SizedBox.shrink()
+                                (ChatUser.fromDocument(snapshot.data!.docs[index])).isAdmin?
+                             buildItem(
+                             context, snapshot.data?.docs[index]
+                            )
+                                     :
+                                SizedBox.shrink()
 
 
 
-                        ,
-                        controller: scrollController,
-                       // separatorBuilder:
-                       // (BuildContext context, int index) =>
-                       // const Divider(),
-                        );
-                          }
-                          else {
-                            return const Center(
-                              child: Text('No user found...'),
-                            );
-                          }
-                        } else {
-                          return const Center(
-                            child: CircularProgressIndicator(),
+                          ,
+                          controller: scrollController,
+                         // separatorBuilder:
+                         // (BuildContext context, int index) =>
+                         // const Divider(),
                           );
-                        }
-                      },
+                            }
+                            else {
+                              return const Center(
+                                child: Text('No user found...'),
+                              );
+                            }
+                          } else {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                        },
+                      ),
                     ),
                   ),
               //  ),

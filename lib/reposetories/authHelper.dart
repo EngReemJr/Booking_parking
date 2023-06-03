@@ -16,6 +16,8 @@ class AuthHelper {
       AppRouter.appRouter
           .showCustomDialoug('Error in registeration', e.toString());
     }
+    AppRouter.appRouter.hideDialoug();
+
   }
 
   Future<String?> signIn(String email, String password) async {

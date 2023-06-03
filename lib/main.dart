@@ -3,8 +3,11 @@ import 'dart:async';
 import 'dart:io';
 
 
+import 'package:chat_part/auth/MongoDbCon.dart';
 import 'package:chat_part/reposetories/firestoreHelper.dart';
+import 'package:chat_part/screens/Activity.dart';
 import 'package:chat_part/screens/HomePage.dart';
+import 'package:chat_part/screens/Settings.dart';
 import 'package:chat_part/screens/loginScreen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -57,6 +60,8 @@ Future<void> main() async {
     badge: true,
     sound: true,
   );
+
+  await MongoDbCon.mongoDbCon.connect();
   runApp(MyApp());
 }
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -107,17 +112,18 @@ class AppInit extends StatelessWidget {
       themeMode: ThemeService().getThemeMode(),*/
       title: "flutter Login UI",
       debugShowCheckedModeBanner: false,
-      home: SplachScreen()
+      home: SplachScreen(),
       //HomePage()
-      /*Activity(),
+      //Activity(),
       routes: {
-        '/second': (context) => DemoApp(),
+        //'/second': (context) => DemoApp(),
         '/Settings': (context) => Settings(),
         '/Activity': (context) => Activity(),
-        '/Park': (context) => Park(),
-        '/MyOrderScreen': (context) => MyOrderScreen(),*/
+        '/ChatPage' :(context) =>HomePage()
+       // '/Park': (context) => Park(),
+       // '/MyOrderScreen': (context) => MyOrderScreen(),
 
-    //  },
+      },
     );
   }
 }

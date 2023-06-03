@@ -1,6 +1,8 @@
+import 'package:chat_part/models/chatUser.dart';
 import 'package:chat_part/screens/SignUpScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../app_router/app_router.dart';
 import '../auth/providers/auth_ptoviders.dart';
@@ -151,12 +153,21 @@ class _loginScreenState extends State<loginScreen> {
       width: double.infinity,
       child: MaterialButton(
         elevation: 5,
-        onPressed: () {
+        onPressed: ()async {
+         await Provider.of<AuthProvider>(context,listen: false).DbsignIn();
+          if(Provider.of<AuthProvider>(context,listen: false).DbloginUser!=null && Provider.of<AuthProvider>(context,listen: false).DbloginUser!.isNotEmpty){
+          List<ChatUser>  cUser =  Provider.of<AuthProvider>(context,listen: false).DbloginUser!.map((e){
+              return ChatUser.fromJson(e);
+            }).toList();
+          Provider.of<AuthProvider>(context,listen: false).DbcheckUser(cUser);
+          Provider.of<AuthProvider>(context,listen: false).signIn();
+            Provider.of<AuthProvider>(context,listen: false).loginEmailController.clear();
+            Provider.of<AuthProvider>(context,listen: false).passwordLoginController.clear();
 
+          }else{
+            Fluttertoast.showToast(msg: 'Error Login');
+          }
 
-Provider.of<AuthProvider>(context,listen: false).signIn();
-Provider.of<AuthProvider>(context,listen: false).loginEmailController.clear();
-Provider.of<AuthProvider>(context,listen: false).passwordLoginController.clear();
         },
 
 

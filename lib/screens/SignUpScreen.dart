@@ -1,3 +1,5 @@
+import 'package:chat_part/app_router/app_router.dart';
+import 'package:chat_part/reposetories/DbHelper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,11 +21,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
 
       Scaffold(
+        resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.blue,
       ),
-      body: Container(
-        child: Container(
+      body:  Container(
           decoration: const BoxDecoration(
               gradient: LinearGradient(colors: [
                 Colors.blue,
@@ -65,7 +67,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   margin: EdgeInsets.only(top: 30),
                   child: TextFormField(
                     validator: (v)=> provider.emailValidation(v!)
-
+,
+                    keyboardType: TextInputType.emailAddress
                     ,
                     controller: provider.registerEmailController,
                     decoration: InputDecoration(
@@ -98,8 +101,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   padding: EdgeInsets.only(left: 30, right: 30),
                   margin: EdgeInsets.only(top: 30),
                   child: TextFormField(
-                    validator: (v) => provider.passwordValidation(v!),
-
+                    validator: (v) => provider.passwordConfirm(v!),
+                    controller: provider.ConpasswordRegisterController,
                     obscureText: true,
                     decoration: InputDecoration(
                       fillColor: Colors.grey.shade100,
@@ -176,7 +179,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             child: IconButton(
                                 color: Colors.white,
                                 onPressed: () {
-                            provider.SignUp();
+
+
+
+      provider.SignUp();
+      DbHelper.dbHelper.insertUser(provider.userNameController.text, provider.passwordRegisterController.text, provider.registerEmailController.text);
+
+
+
                                 },
                                 icon: Icon(Icons.arrow_forward)),
                           ),
@@ -189,7 +199,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
           ),
         ),
-      ),
+
     );});
   }
 }
