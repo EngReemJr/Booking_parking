@@ -346,7 +346,7 @@ class ParkState extends State<Park> {
                       ),
                     ),
                     for (int m = 0; m < Status[k].length; m++)
-                      text_wed(context, Status[k][m], m),
+                      text_wed(context, Status[k][m], m , k),
                   ],
                 ),
               ),
@@ -357,16 +357,19 @@ class ParkState extends State<Park> {
 }
 
 double ttop = 0;
-Widget text_wed(BuildContext context, String s, int i) {
+Widget text_wed(BuildContext context, String s, int i ,int k) {
   if (i != 0) ttop = ttop + 0;
   if (i == 0) ttop = 10;
-  return Padding(
+  return Consumer<AuthProvider>(builder: (context, provider, x) {
+return
+    Padding(
     padding: EdgeInsets.only(left: 10, top: ttop),
     child: SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: TextButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/Activity');
+provider.changeSelectedParking(provider.AllParkings![k]['_id'].toString());
+Navigator.pushNamed(context, '/Activity');
         },
         child: Text(
           s,
@@ -378,5 +381,5 @@ Widget text_wed(BuildContext context, String s, int i) {
         ),
       ),
     ),
-  );
+  );});
 }

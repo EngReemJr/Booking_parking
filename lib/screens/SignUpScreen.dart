@@ -183,7 +183,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
 
       provider.SignUp();
-      DbHelper.dbHelper.insertUser(provider.userNameController.text, provider.passwordRegisterController.text, provider.registerEmailController.text);
 
 
 

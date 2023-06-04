@@ -8,7 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:string_validator/string_validator.dart';
 import '../../app_router/app_router.dart';
-import '../../models/BarkingModel.dart';
+import '../../models/ParkingModel.dart';
 import '../../models/chatUser.dart';
 import '../../reposetories/firestoreHelper.dart';
 import '../../reposetories/storage_helper.dart';
@@ -35,7 +35,7 @@ class AuthProvider extends ChangeNotifier {
   List<Map<String, dynamic>>? AllParkings;
   late ChatUser? DbloggedUser;
   static late AnimationController controller;
-
+String selectedParking = '';
   bool isPlaying = false;
   int notification_counter = 0;
   double progress = 1.0;
@@ -66,6 +66,16 @@ class AuthProvider extends ChangeNotifier {
         notifyListeners();
       }
     });
+  }
+  changeControllerDuration(Duration time){
+    controller.duration = time;
+    notifyListeners();
+
+  }
+  changeSelectedParking(String id){
+    selectedParking = id;
+    notifyListeners();
+
   }
 
   SaveMessageNot(String Id, int value) {
@@ -220,7 +230,8 @@ class AuthProvider extends ChangeNotifier {
 
   SignUp() async {
     if (signUpKey.currentState!.validate()) {
-      // AppRouter.appRouter.showLoadingDialoug();
+     await DbHelper.dbHelper.insertUser(userNameController.text, passwordRegisterController.text, registerEmailController.text);
+
       String? result = await AuthHelper.authHelper.signUp(
           registerEmailController.text, passwordRegisterController.text);
       if (result != null) {
@@ -231,14 +242,21 @@ class AuthProvider extends ChangeNotifier {
           imageUrl: 'https://img.freepik.com/premium-vector/little-kid-avatar-profile_18591-50926.jpg?w=740',
           displayName: userNameController.text,
         ));
-        Fluttertoast.showToast(msg: 'Register Completed');
-        // AppRouter.appRouter.goToWidgetAndReplace(MainScreen());
+        Fluttertoast.showToast(msg: 'Register Completed you can login now');
+        AppRouter.appRouter.goToWidgetAndReplace(loginScreen());
 
 
       }
-      // AppRouter.appRouter.goToWidgetAndReplace(SignUpScreen());
-      //  AppRouter.appRouter.hideDialoug();
+
     }
+  }
+  BookParking() async {
+    //if (signUpKey.currentState!.validate()) {
+      await DbHelper.dbHelper.insertBook(getLoginId(),selectedParking,controller.duration!);
+
+
+
+    //}
   }
 
   getUser(String id) async {
@@ -265,7 +283,7 @@ class AuthProvider extends ChangeNotifier {
 
   getAllParkings() async {
     AllParkings = await DbHelper.dbHelper.getAllParkings();
-    print( 'My Park Name  '+ AllParkings![0]['name']);
+
     notifyListeners();
   }
 

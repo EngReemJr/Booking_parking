@@ -85,7 +85,9 @@ class _DemoAppState extends State<DemoApp> {
                 fontWeight: FontWeight.bold,
               ),
               animationDuration: Duration(milliseconds: 1200),
-              onCreditCardWidgetChange: (CreditCardBrand) {},
+              onCreditCardWidgetChange: (CreditCardBrand) {
+
+              },
             ),
             Expanded(
               child: SingleChildScrollView(
@@ -106,7 +108,6 @@ class _DemoAppState extends State<DemoApp> {
                 //margin: EdgeInsets.only(top: 200),
                 child: TextButton(
                     onPressed: () {
-                      //Navigator.pushNamed(context, '/MyOrderScreen');
                       if (AuthProvider.controller.isAnimating) {
                         AuthProvider.controller.stop();
                           provider.changePlayingValue(false);
@@ -114,7 +115,9 @@ class _DemoAppState extends State<DemoApp> {
                         AuthProvider.controller.reverse(
                             from: AuthProvider.controller.value == 0 ? 1.0 :
                             AuthProvider.controller.value);
-                        provider.changePlayingValue(true);                      }
+                        provider.changePlayingValue(true);
+                      provider.BookParking();
+                      }
                       
                     },
                     child: Text(

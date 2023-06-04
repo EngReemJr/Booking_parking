@@ -124,10 +124,11 @@ class _ActivityState extends State<Activity> with TickerProviderStateMixin {
                           child: CupertinoTimerPicker(
                             initialTimerDuration: AuthProvider.controller.duration!,
                             onTimerDurationChanged: (time) {
-                              AuthProvider.controller.duration = time;
+                              /*AuthProvider.controller.duration = time;
                               setState(() {
 
-                              });
+                              });*/
+                              provider.changeControllerDuration(time);
                             },
                           ),
                         ),
