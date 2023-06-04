@@ -160,7 +160,7 @@ class _loginScreenState extends State<loginScreen> {
               return ChatUser.fromJson(e);
             }).toList();
           Provider.of<AuthProvider>(context,listen: false).DbcheckUser(cUser);
-          Provider.of<AuthProvider>(context,listen: false).signIn();
+          await Provider.of<AuthProvider>(context,listen: false).signIn();
             Provider.of<AuthProvider>(context,listen: false).loginEmailController.clear();
             Provider.of<AuthProvider>(context,listen: false).passwordLoginController.clear();
 

@@ -75,7 +75,7 @@ class _ActivityState extends State<Activity> with TickerProviderStateMixin {
                 Container(
                   margin: EdgeInsets.only(bottom: 390),
                   child: Text(
-                    provider.DbloggedUser!.displayName??"User Name",
+                    provider.getLoginName(),
                     style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -125,6 +125,9 @@ class _ActivityState extends State<Activity> with TickerProviderStateMixin {
                             initialTimerDuration: AuthProvider.controller.duration!,
                             onTimerDurationChanged: (time) {
                               AuthProvider.controller.duration = time;
+                              setState(() {
+
+                              });
                             },
                           ),
                         ),
@@ -178,6 +181,7 @@ class _ActivityState extends State<Activity> with TickerProviderStateMixin {
           
         ],
       ),
+      /*
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
@@ -235,7 +239,7 @@ class _ActivityState extends State<Activity> with TickerProviderStateMixin {
               break;
           }
         },
-      ),
+      ),*/
     );
     });
   }

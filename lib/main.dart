@@ -9,6 +9,7 @@ import 'package:chat_part/screens/Activity.dart';
 import 'package:chat_part/screens/HomePage.dart';
 import 'package:chat_part/screens/Park.dart';
 import 'package:chat_part/screens/PaymentPage.dart';
+import 'package:chat_part/screens/Reserve.dart';
 import 'package:chat_part/screens/Settings.dart';
 import 'package:chat_part/screens/loginScreen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -123,7 +124,8 @@ class AppInit extends StatelessWidget {
         '/Activity': (context) => Activity(),
         '/ChatPage' :(context) =>HomePage(),
         '/Park': (context) => Park(),
-       // '/MyOrderScreen': (context) => MyOrderScreen(),
+        '/Login': (context) => loginScreen(),
+        '/MyOrderScreen': (context) => MyOrderScreen(),
 
       },
     );

@@ -50,6 +50,10 @@ class AppRouter {
       return widget;
     }));
   }
+  SignOutReplacement() {
+    navigatorKey.currentState!.popAndPushNamed('/Login');
+
+  }
 
   goToWidget(Widget widget) {
     navigatorKey.currentState!.push(MaterialPageRoute(builder: (context) {

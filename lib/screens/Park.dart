@@ -185,11 +185,11 @@ class ParkState extends State<Park> {
             });
           },*/
         items: [
-          BottomNavigationBarItem(
+         /* BottomNavigationBarItem(
             icon: Icon(Icons.av_timer),
             label: "Activity",
             backgroundColor: Colors.black,
-          ),
+          ),*/
           BottomNavigationBarItem(
             icon: Icon(Icons.local_parking),
             label: "Park",
@@ -212,18 +212,19 @@ class ParkState extends State<Park> {
             _currentIndex = index;
           });
           switch (index) {
-            case 0:
-              Navigator.pushNamed(context, '/Activity');
+           /*case 0:
+              Navigator.pushNamed(context, '/');
+              break;*/
+          case 1:
+            Navigator.pushNamed(context, '/MyOrderScreen');
+            break;
+            case 2:
+              Navigator.pushNamed(context, '/Settings');
+
               break;
-          /*case 1:
+           /* case 3:
               Navigator.pushNamed(context, '/Settings');
               break;*/
-            case 2:
-              Navigator.pushNamed(context, '/MyOrderScreen');
-              break;
-            case 3:
-              Navigator.pushNamed(context, '/Settings');
-              break;
           }
         },
       ),
@@ -366,7 +367,6 @@ Widget text_wed(BuildContext context, String s, int i) {
       child: TextButton(
         onPressed: () {
           Navigator.pushNamed(context, '/Activity');
-          //print("nassarrrrrrrr");
         },
         child: Text(
           s,

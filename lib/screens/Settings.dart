@@ -19,7 +19,7 @@ class Settings extends StatefulWidget {
 }
 
 class SettingsState extends State<Settings> {
-  int _currentIndex = 0;
+  int _currentIndex = 2;
   bool isObscurePassword = true;
   @override
   Widget build(BuildContext context) {
@@ -48,11 +48,11 @@ class SettingsState extends State<Settings> {
             children: [
               Center(
                 child: Stack(children: [
-                  provider.DbloggedUser == null?
+                 /* provider.DbloggedUser == null?
                       Center(
                         child: CircularProgressIndicator(),
 
-                      ):
+                      ):*/
 
                   Container(
                     width: 130,
@@ -69,7 +69,8 @@ class SettingsState extends State<Settings> {
 
                         image: DecorationImage(image: NetworkImage(
 
-                           provider.DbloggedUser!.imageUrl!??'')
+                           provider.getLoginImage()
+                          )
 
                         )),
                   ),
@@ -98,11 +99,10 @@ class SettingsState extends State<Settings> {
                 height: 30,
               ),
               Container(child: buildTextField("Full Name",
-                  provider.DbloggedUser!.displayName!??'myName'
-
+                  provider.getLoginName()
                   , false)),
               buildTextField("Email",
-                provider.DbloggedUser!.email!??'myName@gmail.com',
+                  provider.getLoginEmail(),
 
                   false),
               //buildTextField("password", "********", true),
@@ -167,11 +167,11 @@ class SettingsState extends State<Settings> {
             });
           },*/
         items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.av_timer),
+        /*  BottomNavigationBarItem(
+           icon: Icon(Icons.av_timer),
             label: "Activity",
             backgroundColor: Colors.black,
-          ),
+          ),*/
           BottomNavigationBarItem(
             icon: Icon(Icons.local_parking),
             label: "Park",
@@ -194,31 +194,27 @@ class SettingsState extends State<Settings> {
           });
           switch (index) {
             case 0:
-              Navigator.pushNamed(context, '/Activity');
-              setState(() {
-                _currentIndex = index;
-              });
+
+              Navigator.pushNamed(context, '/Park');
+
 
               break;
             case 1:
-              Navigator.pushNamed(context, '/Park');
-              setState(() {
-                _currentIndex = index;
-              });
+              Navigator.pushNamed(context, '/MyOrderScreen');
+
               break;
             case 2:
-              Navigator.pushNamed(context, '/MyOrderScreen');
-              setState(() {
-                _currentIndex = index;
-              });
+
+              Navigator.pushNamed(context, '/Settings');
+
               break;
-              case 3:
+             /* case 3:
 
               Navigator.pushNamed(context, '/Settings');
               setState(() {
                 _currentIndex = index;
               });
-              break;
+              break;*/
           }
         },
       ),

@@ -5,14 +5,15 @@ import 'package:flutter/foundation.dart';
 import '../allConstants/firestore_constants.dart';
 
 class ChatUser  {
-  String? id;
+   String? id;
   String? imageUrl;
   final String displayName;
   final String email;
   final bool isAdmin;
   String? password;
 
-  ChatUser({ this.id,
+  ChatUser({
+     this.id,
     required this.email,
     required this.imageUrl,
     required this.displayName,

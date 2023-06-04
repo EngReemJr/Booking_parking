@@ -13,6 +13,7 @@ import '../../models/chatUser.dart';
 import '../../reposetories/firestoreHelper.dart';
 import '../../reposetories/storage_helper.dart';
 import '../../screens/HomePage.dart';
+import '../../screens/introductionScreen.dart';
 import '../../screens/loginScreen.dart';
 import '../../reposetories/authHelper.dart';
 
@@ -30,7 +31,7 @@ class AuthProvider extends ChangeNotifier {
   late String email;
   late String password;
   ChatUser? loggedUser;
-  List<Map<String, dynamic>>? DbloginUser;
+  List<Map<String, dynamic>>? DbloginUser = [];
   List<Map<String, dynamic>>? AllParkings;
   late ChatUser? DbloggedUser;
   static late AnimationController controller;
@@ -71,7 +72,41 @@ class AuthProvider extends ChangeNotifier {
     prefs.setInt(Id, value);
     notifyListeners();
   }
+  SaveLoginDetails(ChatUser cu) {
+    prefs.setString('Id', cu.id.toString()!);
+    prefs.setString('name', cu.displayName);
+    prefs.setString('email', cu.email);
+    prefs.setString('image', cu.imageUrl!);
+    notifyListeners();
+  }
+  ResetLoginDetails() {
+    prefs.setString('Id', '');
+    prefs.setString('name', '');
+    prefs.setString('email', '');
+    prefs.setString('image', '');
+    notifyListeners();
+  }
 
+  String getLoginName() {
+    String name = prefs.getString('name') ?? '';
+
+    return name;
+  }
+  String getLoginEmail() {
+    String email = prefs.getString('email') ?? '';
+
+    return email;
+  }
+  String getLoginId() {
+    String Id = prefs.getString('Id') ?? '';
+
+    return Id;
+  }
+  String getLoginImage() {
+    String image = prefs.getString('image') ?? '';
+
+    return image;
+  }
   int getMessageNot(String Id) {
     int intValue = prefs.getInt(Id) ?? 0;
 
@@ -173,7 +208,8 @@ class AuthProvider extends ChangeNotifier {
   DbcheckUser(List<ChatUser> loginUser) {
     if (loginUser.isNotEmpty) {
       DbloggedUser = loginUser.elementAt(0);
-      print('DbloggedUser = ' + DbloggedUser!.displayName!);
+      SaveLoginDetails(DbloggedUser!);
+     // print('DbloggedUser = ' + DbloggedUser!.displayName!);
     }
     else {
       DbloggedUser = null;
@@ -223,7 +259,7 @@ class AuthProvider extends ChangeNotifier {
       getUser(userId);
       AppRouter.appRouter.goToWidgetAndReplace(Settings());
     } else {
-      AppRouter.appRouter.goToWidgetAndReplace(loginScreen());
+      AppRouter.appRouter.goToWidgetAndReplace(Rplespage());
     }
   }
 
@@ -235,9 +271,9 @@ class AuthProvider extends ChangeNotifier {
 
   signOut() async {
     try {
-      await AppRouter.appRouter.goToWidgetAndReplace(loginScreen());
+      await AppRouter.appRouter.SignOutReplacement();
       await AuthHelper.authHelper.signOut();
-
+       ResetLoginDetails();
       DbcheckUser([]);
       DbloginUser = [];
     }

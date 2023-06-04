@@ -11,19 +11,7 @@ import '../models/chatUser.dart';
 class SplachScreen extends StatelessWidget {
   navigationFun(BuildContext context) async {
     await Future.delayed(const Duration(seconds: 3));
-    //if(Provider.of<AuthProvider>(context,listen: false).DbloginUser!=null && Provider.of<AuthProvider>(context,listen: false).DbloginUser!.isNotEmpty){
-
-     //   List<ChatUser> cUser = await Provider
-         //   .of<AuthProvider>(context, listen: false)
-          //  .DbloginUser!
-          //  .map((e) {
-        //  return ChatUser.fromJson(e);
-      //  }).toList();
-       // await Provider.of<AuthProvider>(context, listen: false).DbcheckUser(
-       //     cUser);
         Provider.of<AuthProvider>(context, listen: false).checkUser();
-
-
 
   }
 
