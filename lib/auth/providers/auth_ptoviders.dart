@@ -83,7 +83,7 @@ String selectedParking = '';
     notifyListeners();
   }
   SaveLoginDetails(ChatUser cu) {
-    prefs.setString('Id', cu.id.toString()!);
+    prefs.setString('Id', cu.id!);
     prefs.setString('name', cu.displayName);
     prefs.setString('email', cu.email);
     prefs.setString('image', cu.imageUrl!);
@@ -219,7 +219,7 @@ String selectedParking = '';
     if (loginUser.isNotEmpty) {
       DbloggedUser = loginUser.elementAt(0);
       SaveLoginDetails(DbloggedUser!);
-     // print('DbloggedUser = ' + DbloggedUser!.displayName!);
+
     }
     else {
       DbloggedUser = null;
@@ -250,13 +250,21 @@ String selectedParking = '';
 
     }
   }
-  BookParking() async {
-    //if (signUpKey.currentState!.validate()) {
-      await DbHelper.dbHelper.insertBook(getLoginId(),selectedParking,controller.duration!);
+  BookParking(String CardNum , String cvv , String cardHolder ) async {
 
+    String bookId  = await DbHelper.dbHelper.insertBook(getLoginId(),selectedParking,controller.duration!);
+ Fluttertoast.showToast(msg: bookId);
+  paymentDetails(CardNum , cvv , cardHolder , bookId);
 
-
-    //}
+  }
+  paymentDetails(String CardNum , String cvv , String cardHolder , String bookId ) async {
+    await DbHelper.dbHelper.insertPayment(getLoginId(),
+      ((int.parse(controller.duration!.inHours.toString()))*10),
+      bookId,
+      cardHolder,
+      CardNum,
+      cvv
+    );
   }
 
   getUser(String id) async {

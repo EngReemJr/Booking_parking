@@ -5,6 +5,7 @@ import 'package:chat_part/models/chatUser.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
 import '../models/Booking.dart';
+import '../models/Payment.dart';
 
 class MongoDbCon {
   MongoDbCon._();
@@ -47,6 +48,26 @@ print(e.toString());
 return e.toString();
   }
 }
+  Future<String> insertPayment(Payment payment)async{
+    try {
+
+      var result =
+      await paymentCollection.insertOne(payment.toMap());
+
+      print('${result.isSuccess}');
+      if(result.isSuccess){
+        return 'Pay Done';
+      }
+      else{
+        return  'Pay Failed';
+
+      }
+    }
+    catch(e){
+      print(e.toString());
+      return e.toString();
+    }
+  }
   Future<String> insertBooking(Booking book)async{
     try {
 
@@ -55,10 +76,10 @@ return e.toString();
 
       print('${result.isSuccess}');
       if(result.isSuccess){
-        return 'Success inserted';
+        return 'Booking Success';
       }
       else{
-        return  'Failed inserted';
+        return  'Booking Failed';
 
       }
     }

@@ -85,9 +85,10 @@ class ChatUser  {
 
   factory  ChatUser.fromJson(Map<String, dynamic> json) {
      return ChatUser(
+       id: json['_id']  ,
          email: json['email'] ?? '',
          displayName: json['fullName'] ?? '',
-         imageUrl: json['avatr']??'https://static.vecteezy.com/system/resources/previews/001/503/756/non_2x/boy-face-avatar-cartoon-free-vector.jpg',
+         imageUrl: json['avatar']??'https://static.vecteezy.com/system/resources/previews/001/503/756/non_2x/boy-face-avatar-cartoon-free-vector.jpg',
          isAdmin: json['isAdmin'] ?? false);
   }
 

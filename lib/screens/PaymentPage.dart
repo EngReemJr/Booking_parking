@@ -116,7 +116,12 @@ class _DemoAppState extends State<DemoApp> {
                             from: AuthProvider.controller.value == 0 ? 1.0 :
                             AuthProvider.controller.value);
                         provider.changePlayingValue(true);
-                      provider.BookParking();
+                      provider.BookParking(
+                        cardNumber,
+                        cvvNumber,
+                        cardHolderName
+
+                      );
                       }
                       
                     },

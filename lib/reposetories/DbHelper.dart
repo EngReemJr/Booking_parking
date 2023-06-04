@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:chat_part/auth/MongoDbCon.dart';
 import 'package:chat_part/models/ParkingModel.dart';
+import 'package:chat_part/models/Payment.dart';
 import 'package:chat_part/models/chatUser.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
@@ -20,10 +21,21 @@ final  cUser = ChatUser(id : '${_id}',email: email, imageUrl: 'https://img.freep
  await MongoDbCon.mongoDbCon.insertUser(cUser);
 
    }
-  Future<void> insertBook(String user_Id , String parking_Id , Duration duration ) async{
-    var _id = mongo.ObjectId();
-    final  newBooking = Booking(id : '${_id}',parking_id: parking_Id, user_id: user_Id, duration: duration, status: 'active');
+  Future<String> insertBook(String user_Id , String parking_Id , Duration duration ) async{
+    var id = mongo.ObjectId();
+    final  newBooking = Booking(id : '${id}',parking_id: parking_Id, user_id: user_Id, duration: duration, status: 'active');
     await MongoDbCon.mongoDbCon.insertBooking(newBooking);
+return id.toString();
+  }
+  Future<void> insertPayment(String user_Id , num amount , String booking_id  ,
+      String card_holder,
+      String card_num,String CVV)
+  async{
+    var _id = mongo.ObjectId();
+    final  payDetails = Payment(id : '${_id}',amount: amount, user_id: user_Id,
+        booking_id: booking_id, card_holder:
+        card_holder ,card_num:card_num ,CVV:  CVV);
+    await MongoDbCon.mongoDbCon.insertPayment(payDetails);
 
   }
   Future<List<Map<String, dynamic>>?> getUser(String email, String password) async{
