@@ -63,6 +63,15 @@ try{
       log(e.toString());
     }
   }
+  Future<List<Map<String, dynamic>>?> getAllBookings() async {
+    try {
+      Future<List<Map<String, dynamic>>> BookDocument = MongoDbCon.mongoDbCon.bookingCollection.find().toList();
+      return BookDocument;
+    } on Exception catch (e) {
+      log(e.toString());
+    }
+  }
+
 
 
 }

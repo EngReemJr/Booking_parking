@@ -366,18 +366,32 @@ return
     padding: EdgeInsets.only(left: 10, top: ttop),
     child: SingleChildScrollView(
       scrollDirection: Axis.vertical,
-      child: TextButton(
-        onPressed: () {
+      child: Container(
+        color:
+        provider.ActiveBookNum>=3?
+
+        Colors.red:
+        Colors.yellow,
+        child: TextButton(
+
+
+          onPressed: () {
 provider.changeSelectedParking(provider.AllParkings![k]['_id'].toString());
 Navigator.pushNamed(context, '/Activity');
-        },
-        child: Text(
-          s,
-          textAlign: TextAlign.left,
-          style: TextStyle(
-              color: Color.fromARGB(255, 0, 0, 0),
-              fontSize: MediaQuery.of(context).size.width * 0.04,
-              fontWeight: FontWeight.w500),
+          },
+          child: Text(
+           // s,
+            provider.ActiveBookNum>=3?
+                'Busy':
+           'Free'
+
+            ,
+            textAlign: TextAlign.left,
+            style: TextStyle(
+                color: Color.fromARGB(255, 0, 0, 0),
+                fontSize: MediaQuery.of(context).size.width * 0.04,
+                fontWeight: FontWeight.w500),
+          ),
         ),
       ),
     ),

@@ -1,6 +1,8 @@
+
 import 'package:chat_part/auth/providers/auth_ptoviders.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 
@@ -107,7 +109,7 @@ class _DemoAppState extends State<DemoApp> {
             Container(
                 //margin: EdgeInsets.only(top: 200),
                 child: TextButton(
-                    onPressed: () {
+                    onPressed: () async{
                       if (AuthProvider.controller.isAnimating) {
                         AuthProvider.controller.stop();
                           provider.changePlayingValue(false);
@@ -116,12 +118,22 @@ class _DemoAppState extends State<DemoApp> {
                             from: AuthProvider.controller.value == 0 ? 1.0 :
                             AuthProvider.controller.value);
                         provider.changePlayingValue(true);
-                      provider.BookParking(
+                        var temp = DateTime.now().toUtc();
+                        var d1 = DateTime.utc(temp.year,temp.month);
+                        var d2 = DateTime.utc(int.parse('20'+expiryDate.split('/')[1]),int.parse(expiryDate.split('/')[0]));
+                          if(d1.compareTo(d2)==-1){
+                      await provider.BookParking(
                         cardNumber,
                         cvvNumber,
                         cardHolderName
 
                       );
+                        Navigator.pop(context);
+
+                          }
+                          else{
+                            Fluttertoast.showToast(msg: 'Invalid card');
+                          }
                       }
                       
                     },

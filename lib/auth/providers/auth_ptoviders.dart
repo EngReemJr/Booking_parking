@@ -29,10 +29,12 @@ class AuthProvider extends ChangeNotifier {
   TextEditingController ConpasswordRegisterController = TextEditingController();
   TextEditingController passwordLoginController = TextEditingController();
   late String email;
+  late int ActiveBookNum;
   late String password;
   ChatUser? loggedUser;
   List<Map<String, dynamic>>? DbloginUser = [];
   List<Map<String, dynamic>>? AllParkings;
+  List<Map<String, dynamic>>? AllBooking;
   late ChatUser? DbloggedUser;
   static late AnimationController controller;
 String selectedParking = '';
@@ -49,6 +51,7 @@ String selectedParking = '';
     intialSharedPref();
     getTokens();
     getAllParkings();
+    getAllBookings();
   }
 
   intialSharedPref() async {
@@ -63,6 +66,7 @@ String selectedParking = '';
       } else {
         progress = 1.0;
         isPlaying = false;
+
         notifyListeners();
       }
     });
@@ -74,6 +78,7 @@ String selectedParking = '';
   }
   changeSelectedParking(String id){
     selectedParking = id;
+    ActiveBooking(id);
     notifyListeners();
 
   }
@@ -293,6 +298,22 @@ String selectedParking = '';
     AllParkings = await DbHelper.dbHelper.getAllParkings();
 
     notifyListeners();
+  }
+  getAllBookings() async {
+    AllBooking = await DbHelper.dbHelper.getAllBookings();
+
+    notifyListeners();
+  }
+  ActiveBooking(String parkingId){
+    ActiveBookNum = 0;
+AllBooking?.forEach((element) {
+
+  if(element['status']=='active'&&element['parking_id']==parkingId){
+    ActiveBookNum = ActiveBookNum+1;
+  }
+  notifyListeners();
+
+});
   }
 
   signOut() async {
