@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import '../allConstants/firestore_constants.dart';
 
 class ChatUser  {
-   String? id;
+   dynamic id;
   String? imageUrl;
   final String displayName;
   final String email;

@@ -34,7 +34,7 @@ late var userCollection, parkingCollection,paymentCollection,bookingCollection;
    var result =
     await userCollection.insertOne(cUser.toJson());
 
-    print('${result.isSuccess}');
+  //  print('${result.isSuccess}');
     if(result.isSuccess){
 return 'Success inserted';
     }
@@ -54,7 +54,7 @@ return e.toString();
       var result =
       await paymentCollection.insertOne(payment.toMap());
 
-      print('${result.isSuccess}');
+      //print('${result.isSuccess}');
       if(result.isSuccess){
         return 'Pay Done';
       }
@@ -74,7 +74,7 @@ return e.toString();
       var result =
       await bookingCollection.insertOne(book.toMap());
 
-      print('${result.isSuccess}');
+      //print('${result.isSuccess}');
       if(result.isSuccess){
         return 'Booking Success';
       }
@@ -84,7 +84,7 @@ return e.toString();
       }
     }
     catch(e){
-      print(e.toString());
+     // print(e.toString());
       return e.toString();
     }
   }

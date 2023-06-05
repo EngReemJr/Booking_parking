@@ -81,8 +81,17 @@ class ParkState extends State<Park> {
         position: LatLng(Provider.of<AuthProvider>(context,listen: false).AllParkings![i]['lat'], Provider.of<AuthProvider>(context,listen: false).AllParkings![i]['lang']),
         infoWindow: InfoWindow(
           title: Provider.of<AuthProvider>(context,listen: false).AllParkings![i]['name'],
-          onTap: () {
+          onTap: () async {
+            /*await Provider.of<AuthProvider>(context,listen: false).ActiveBooking((Provider.of<AuthProvider>(context,listen: false)
+                .AllParkings![int.parse(txt.text)]['_id']).toString());
+
+            showAlertDialog(context, int.parse(txt.text)*/
+
+            await Provider.of<AuthProvider>(context,listen: false).ActiveBooking((Provider.of<AuthProvider>(context,listen: false)
+                .AllParkings![int.parse(txt.text)]['_id']).toString());
+
             showAlertDialog(context, i);
+
           },
         ),
       )));
@@ -101,10 +110,12 @@ class ParkState extends State<Park> {
               color: Color.fromARGB(255, 0, 0, 0),
             ),
           ),
-          onPressed: () {
+          onPressed: ()async {
+            await Provider.of<AuthProvider>(context,listen: false).ActiveBooking((Provider.of<AuthProvider>(context,listen: false)
+                .AllParkings![int.parse(txt.text)]['_id']).toString());
+
             showAlertDialog(context, int.parse(txt.text) );
-            // Navigator.pushReplacement(
-            //context, MaterialPageRoute(builder: (context) => SignUpScreen()));
+
           },
         ),
         backgroundColor: Colors.blue,
@@ -281,7 +292,9 @@ class ParkState extends State<Park> {
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return Dialog(
+      return Consumer<AuthProvider>(builder: (context, provider, x) {
+
+        return Dialog(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0)), //this right here
             child: Container(
@@ -345,13 +358,16 @@ class ParkState extends State<Park> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    for (int m = 0; m < Status[k].length; m++)
-                      text_wed(context, Status[k][m], m , k),
+
+                    provider.ActiveBookNum>=3?
+                    text_wed(context, 'Busy', 0 , k):
+                    text_wed(context, 'Free', 0 , k),
+
                   ],
                 ),
               ),
             ),
-          );
+          );});
         });
   }
 }
@@ -368,24 +384,27 @@ return
       scrollDirection: Axis.vertical,
       child: Container(
         color:
-        provider.ActiveBookNum>=3?
+        (() {
 
-        Colors.red:
-        Colors.yellow,
+          if (provider.ActiveBookNum>=15) {
+            return Colors.red;
+          }
+          else if (provider.ActiveBookNum>=9) {
+            return Colors.yellow;
+          }
+          else {
+            return Colors.green;
+          }
+        }()),
         child: TextButton(
 
 
           onPressed: () {
 provider.changeSelectedParking(provider.AllParkings![k]['_id'].toString());
-Navigator.pushNamed(context, '/Activity');
+Navigator.popAndPushNamed(context, '/Activity');
           },
           child: Text(
-           // s,
-            provider.ActiveBookNum>=3?
-                'Busy':
-           'Free'
-
-            ,
+            s,
             textAlign: TextAlign.left,
             style: TextStyle(
                 color: Color.fromARGB(255, 0, 0, 0),

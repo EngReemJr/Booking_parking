@@ -16,7 +16,6 @@ return  Consumer<AuthProvider>(builder: (context, provider, x) {
       ),
       body:
 
-
       Stack(
         children: [
           SafeArea(
@@ -83,22 +82,39 @@ return  Consumer<AuthProvider>(builder: (context, provider, x) {
                 ),
                 Container(
                   width: double.infinity,
+                  height: MediaQuery.of(context).size.height*0.2,
                   color: Colors.grey,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Column(
-                      children: [
+                    child:
+                     Column(
+                     children: [
                         // Text("data"),
-                        ProductCard(
+                      /*  ProductCard(
                           price: "20",
                           name: "Faisal street parking",
                         ),
                         ProductCard(
                           price: "30",
                           name: "Palestine street parking",
-                        ),
-                      ],
-                    ),
+                        ),*/
+                       Expanded( child:
+                       ListView.builder(
+                        // shrinkWrap: true,
+                            itemCount: provider.AllPayment!.length!,
+                            itemBuilder: (BuildContext context, int index) {
+                              return
+
+                                ProductCard(
+                                  price: provider.AllPayment![index]!.toString() ,
+                                  name: "Palestine street parking",
+                                )
+
+                              ;
+                            }),
+                  )
+                     ],
+                   ),
                   ),
                 ),
                 Padding(

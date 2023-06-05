@@ -1,6 +1,7 @@
 //import 'package:firstapp/theme_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 import '../auth/providers/auth_ptoviders.dart';
@@ -11,6 +12,8 @@ import '../auth/providers/auth_ptoviders.dart';
 //import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 
 class Activity extends StatefulWidget {
+  static String ParkingName='';
+
   const Activity({Key? key}) : super(key: key);
 
   @override
@@ -22,7 +25,6 @@ class _ActivityState extends State<Activity> with TickerProviderStateMixin {
   int _currentIndex = 0;
   //static const moonIcon = CupertionIcons.moon_stars;
   static const moonIcon = CupertinoIcons.moon_stars;
-
 
   @override
   void initState() {
@@ -42,7 +44,7 @@ class _ActivityState extends State<Activity> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    AuthProvider.controller.dispose();
+   // AuthProvider.controller.dispose();
     super.dispose();
   }
 
@@ -52,6 +54,7 @@ class _ActivityState extends State<Activity> with TickerProviderStateMixin {
 
       return Scaffold(
       appBar: AppBar(
+          automaticallyImplyLeading:false,
         title: Text('Activtty'),
         actions: [
           IconButton(
@@ -156,7 +159,19 @@ class _ActivityState extends State<Activity> with TickerProviderStateMixin {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, '/second');
+
+                    if(!AuthProvider.controller.isAnimating) {
+                      provider.AllParkings!.forEach((element) {
+                        if(element['_id'].toString()==provider.selectedParking.toString()) {
+                          Activity.ParkingName = element['name'];
+                        }
+                      });
+                      Navigator.pushNamed(context, '/second');
+                    }
+                    else
+                      {
+                        Fluttertoast.showToast(msg: 'you must wait until the counter stop to book again');
+                      }
 
                   },
                   child: RoundButton(

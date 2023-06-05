@@ -9,6 +9,8 @@ import 'package:provider/provider.dart';
 import 'package:flutter_credit_card/credit_card_model.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 
+import 'Activity.dart';
+
 class DemoApp extends StatefulWidget {
   @override
   _DemoAppState createState() => _DemoAppState();
@@ -20,6 +22,7 @@ class _DemoAppState extends State<DemoApp> {
   String cvvNumber = '';
   String expiryDate = '';
   bool showBackView = false;
+  String parkingName = Activity.ParkingName;
 
  void onCreditCardModel(CreditCardModel creditCardModel) {
     setState(() {
@@ -49,15 +52,18 @@ class _DemoAppState extends State<DemoApp> {
             ),
             Row(
               children: [
-                Container(
-                    margin: EdgeInsets.only(right: 180),
-                    child: Text(
-                      "Parking Name",
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )),
+                Expanded(
+                  child: Container(
+                      margin: EdgeInsets.only(right: 180),
+                      child: Text(
+                          parkingName
+                       ,
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )),
+                ),
                 Icon(Icons.money),
                 Container(
                     // margin: EdgeInsets.only(right: 280),

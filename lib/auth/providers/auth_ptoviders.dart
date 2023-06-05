@@ -29,12 +29,13 @@ class AuthProvider extends ChangeNotifier {
   TextEditingController ConpasswordRegisterController = TextEditingController();
   TextEditingController passwordLoginController = TextEditingController();
   late String email;
-  late int ActiveBookNum;
+   int ActiveBookNum =0;
   late String password;
   ChatUser? loggedUser;
   List<Map<String, dynamic>>? DbloginUser = [];
-  List<Map<String, dynamic>>? AllParkings;
-  List<Map<String, dynamic>>? AllBooking;
+  List<Map<String, dynamic>>? AllParkings = [];
+  List<Map<String, dynamic>>? AllBooking = [];
+  List<Map<String, dynamic>>? AllPayment = [];
   late ChatUser? DbloggedUser;
   static late AnimationController controller;
 String selectedParking = '';
@@ -52,6 +53,9 @@ String selectedParking = '';
     getTokens();
     getAllParkings();
     getAllBookings();
+    getAllPayments();
+    print('User Payemnt  = '+ AllPayment!.length!.toString());
+
   }
 
   intialSharedPref() async {
@@ -88,7 +92,7 @@ String selectedParking = '';
     notifyListeners();
   }
   SaveLoginDetails(ChatUser cu) {
-    prefs.setString('Id', cu.id!);
+    prefs.setString('Id', cu.id!.toString());
     prefs.setString('name', cu.displayName);
     prefs.setString('email', cu.email);
     prefs.setString('image', cu.imageUrl!);
@@ -235,11 +239,12 @@ String selectedParking = '';
 
   SignUp() async {
     if (signUpKey.currentState!.validate()) {
-     await DbHelper.dbHelper.insertUser(userNameController.text, passwordRegisterController.text, registerEmailController.text);
 
       String? result = await AuthHelper.authHelper.signUp(
           registerEmailController.text, passwordRegisterController.text);
       if (result != null) {
+        await DbHelper.dbHelper.insertUser(userNameController.text, passwordRegisterController.text, registerEmailController.text);
+
         FirestoreHelper.firestoreHelper.addNewUser(ChatUser(
           id: result,
           email: registerEmailController.text,
@@ -258,8 +263,8 @@ String selectedParking = '';
   BookParking(String CardNum , String cvv , String cardHolder ) async {
 
     String bookId  = await DbHelper.dbHelper.insertBook(getLoginId(),selectedParking,controller.duration!);
- Fluttertoast.showToast(msg: bookId);
   paymentDetails(CardNum , cvv , cardHolder , bookId);
+  getAllBookings();
 
   }
   paymentDetails(String CardNum , String cvv , String cardHolder , String bookId ) async {
@@ -270,6 +275,7 @@ String selectedParking = '';
       CardNum,
       cvv
     );
+    getAllPayments();
   }
 
   getUser(String id) async {
@@ -301,6 +307,11 @@ String selectedParking = '';
   }
   getAllBookings() async {
     AllBooking = await DbHelper.dbHelper.getAllBookings();
+
+    notifyListeners();
+  }
+  getAllPayments() async {
+    AllPayment = await DbHelper.dbHelper.getAllPayments(getLoginId());
 
     notifyListeners();
   }

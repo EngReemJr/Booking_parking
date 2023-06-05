@@ -6,6 +6,7 @@ import 'package:chat_part/models/Payment.dart';
 import 'package:chat_part/models/chatUser.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
+import 'package:provider/provider.dart';
 
 import '../app_router/app_router.dart';
 import '../models/Booking.dart';
@@ -17,7 +18,7 @@ class DbHelper{
    Future<void> insertUser(String displayName , String password , String email ) async{
 var _id = mongo.ObjectId();
 print('${_id}');
-final  cUser = ChatUser(id : '${_id}',email: email, imageUrl: 'https://img.freepik.com/premium-vector/little-kid-avatar-profile_18591-50926.jpg?w=740', displayName: displayName, password: password,isAdmin: false);
+final  cUser = ChatUser(id : _id,email: email, imageUrl: 'https://img.freepik.com/premium-vector/little-kid-avatar-profile_18591-50926.jpg?w=740', displayName: displayName, password: password,isAdmin: false);
  await MongoDbCon.mongoDbCon.insertUser(cUser);
 
    }
@@ -67,6 +68,14 @@ try{
     try {
       Future<List<Map<String, dynamic>>> BookDocument = MongoDbCon.mongoDbCon.bookingCollection.find().toList();
       return BookDocument;
+    } on Exception catch (e) {
+      log(e.toString());
+    }
+  }
+  Future<List<Map<String, dynamic>>?> getAllPayments(String user_id) async {
+    try {
+      Future<List<Map<String, dynamic>>> PayDocument = MongoDbCon.mongoDbCon.paymentCollection.find({ "user_id": user_id}).toList();
+      return PayDocument;
     } on Exception catch (e) {
       log(e.toString());
     }
