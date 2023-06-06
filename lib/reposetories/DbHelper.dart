@@ -24,7 +24,7 @@ final  cUser = ChatUser(id : _id,email: email, imageUrl: 'https://img.freepik.co
    }
   Future<String> insertBook(String user_Id , String parking_Id , Duration duration ) async{
     var id = mongo.ObjectId();
-    final  newBooking = Booking(id : '${id}',parking_id: parking_Id, user_id: user_Id, duration: duration, status: 'active');
+    final  newBooking = Booking(id : id,parking_id: parking_Id, user_id: user_Id, duration: duration, status: 'active');
     await MongoDbCon.mongoDbCon.insertBooking(newBooking);
 return id.toString();
   }
@@ -33,7 +33,7 @@ return id.toString();
       String card_num,String CVV)
   async{
     var _id = mongo.ObjectId();
-    final  payDetails = Payment(id : '${_id}',amount: amount, user_id: user_Id,
+    final  payDetails = Payment(id : _id,amount: amount, user_id: user_Id,
         booking_id: booking_id, card_holder:
         card_holder ,card_num:card_num ,CVV:  CVV);
     await MongoDbCon.mongoDbCon.insertPayment(payDetails);

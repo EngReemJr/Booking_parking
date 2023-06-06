@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import '../allConstants/firestore_constants.dart';
 
 class Parking  {
-  String? id;
+  dynamic? id;
   final String name;
   final String beg_Hour;
   final String end_Hour;

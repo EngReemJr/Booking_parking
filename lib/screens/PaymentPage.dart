@@ -39,6 +39,7 @@ class _DemoAppState extends State<DemoApp> {
     return Consumer<AuthProvider>(builder: (context, provider, x) {
 
       return Scaffold(
+        resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text('Credit Card Ui'),
         centerTitle: true,

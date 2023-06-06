@@ -13,6 +13,7 @@ class SplachScreen extends StatelessWidget {
     await Future.delayed(const Duration(seconds: 3));
         Provider.of<AuthProvider>(context, listen: false).checkUser();
 
+    Provider.of<AuthProvider>(context, listen: false).intialSharedPref();
   }
 
   @override

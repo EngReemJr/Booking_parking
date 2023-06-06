@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 class Payment  {
-  String? id;
+  dynamic? id;
   final String user_id;
   final String booking_id;
   final num amount ;

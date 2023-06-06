@@ -36,6 +36,7 @@ class AuthProvider extends ChangeNotifier {
   List<Map<String, dynamic>>? AllParkings = [];
   List<Map<String, dynamic>>? AllBooking = [];
   List<Map<String, dynamic>>? AllPayment = [];
+  List<Map<String, dynamic>>? UserBookingPayment = [];
   late ChatUser? DbloggedUser;
   static late AnimationController controller;
 String selectedParking = '';
@@ -54,7 +55,8 @@ String selectedParking = '';
     getAllParkings();
     getAllBookings();
     getAllPayments();
-    print('User Payemnt  = '+ AllPayment!.length!.toString());
+    getUserBookingPayment();
+
 
   }
 
@@ -266,6 +268,8 @@ String selectedParking = '';
   paymentDetails(CardNum , cvv , cardHolder , bookId);
   getAllBookings();
 
+  getUserBookingPayment();
+
   }
   paymentDetails(String CardNum , String cvv , String cardHolder , String bookId ) async {
     await DbHelper.dbHelper.insertPayment(getLoginId(),
@@ -294,6 +298,8 @@ String selectedParking = '';
 
     if (userId != null) {
       getUser(userId);
+      prefs = await SharedPreferences.getInstance();
+
       AppRouter.appRouter.goToWidgetAndReplace(Settings());
     } else {
       AppRouter.appRouter.goToWidgetAndReplace(Rplespage());
@@ -314,6 +320,37 @@ String selectedParking = '';
     AllPayment = await DbHelper.dbHelper.getAllPayments(getLoginId());
 
     notifyListeners();
+  }
+  getUserBookingPayment(){
+    //getAllBookings();
+   // getAllPayments();
+    AllBooking!.forEach((element) {
+
+      if(element['user_id'].toString() == getLoginId() ){
+        Map <String,dynamic>userPay = {};
+        AllPayment!.forEach((x) {
+          print( x['amount'].toString());
+          if(x['booking_id'] == element['_id'].toString()){
+            print( 'User Id payment = ' +x['amount'].toString());
+            userPay!['amount'] = x['amount'];
+            print('Park cost ${x['amount']}');
+          }
+        });
+        AllParkings!.forEach((x) {
+          if(x['_id'] == element['parking_id'].toString()){
+            userPay!['parkingName'] = x['name'];
+            print('Park name ${x['name']}');
+          }
+        }
+
+        );
+        if(!userPay.isEmpty){
+           UserBookingPayment!.add(userPay);
+        }
+      }
+
+    });
+notifyListeners();
   }
   ActiveBooking(String parkingId){
     ActiveBookNum = 0;

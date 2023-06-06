@@ -6,6 +6,7 @@ import '../auth/providers/auth_ptoviders.dart';
 class MyOrderScreen extends StatelessWidget {
   int _currentIndex = 1;
   static const routeName = "/myOrderScreen";
+
   @override
   Widget build(BuildContext context) {
 return  Consumer<AuthProvider>(builder: (context, provider, x) {
@@ -101,13 +102,14 @@ return  Consumer<AuthProvider>(builder: (context, provider, x) {
                        Expanded( child:
                        ListView.builder(
                         // shrinkWrap: true,
-                            itemCount: provider.AllPayment!.length!,
+                            itemCount: provider.UserBookingPayment!.length!,
                             itemBuilder: (BuildContext context, int index) {
+                              print('AMount == ' +provider.UserBookingPayment![index]['amount'].toString());
                               return
 
                                 ProductCard(
-                                  price: provider.AllPayment![index]!.toString() ,
-                                  name: "Palestine street parking",
+                                  price: provider.UserBookingPayment![index]['amount'].toString() ,
+                                  name: provider.UserBookingPayment![index]['name'].toString() ,
                                 )
 
                               ;

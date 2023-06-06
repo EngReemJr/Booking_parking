@@ -17,6 +17,7 @@ late var userCollection, parkingCollection,paymentCollection,bookingCollection;
   try {
     db = await Db.create(MONGO_CON_URL);
     await db.open();
+
     inspect(db);
     userCollection = db.collection(USER_COLLECTION);
     parkingCollection = db.collection(PARKING_COLLECTION);

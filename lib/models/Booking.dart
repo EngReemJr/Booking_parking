@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 class Booking  {
-  String? id;
+  dynamic? id;
   final String user_id;
   final String parking_id;
   final Duration duration;

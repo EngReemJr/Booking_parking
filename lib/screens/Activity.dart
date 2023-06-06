@@ -7,10 +7,6 @@ import 'package:provider/provider.dart';
 import '../auth/providers/auth_ptoviders.dart';
 
 
-//import 'package:slider_button/slider_button.dart';
-//import '../widgets/round-button.dart';
-//import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
-
 class Activity extends StatefulWidget {
   static String ParkingName='';
 
@@ -44,7 +40,7 @@ class _ActivityState extends State<Activity> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-   // AuthProvider.controller.dispose();
+   AuthProvider.controller.dispose();
     super.dispose();
   }
 

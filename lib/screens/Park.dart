@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ffi';
 import 'package:chat_part/auth/providers/auth_ptoviders.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 //import 'package:grad_project/pages/home_page.dart';
@@ -359,7 +360,7 @@ class ParkState extends State<Park> {
                       ),
                     ),
 
-                    provider.ActiveBookNum>=3?
+                    provider.ActiveBookNum>=15?
                     text_wed(context, 'Busy', 0 , k):
                     text_wed(context, 'Free', 0 , k),
 
@@ -400,8 +401,14 @@ return
 
 
           onPressed: () {
-provider.changeSelectedParking(provider.AllParkings![k]['_id'].toString());
-Navigator.popAndPushNamed(context, '/Activity');
+            if (provider.ActiveBookNum<15) {
+              provider.changeSelectedParking(
+                  provider.AllParkings![k]['_id'].toString());
+              Navigator.popAndPushNamed(context, '/Activity');
+            }
+            else{
+              Fluttertoast.showToast(msg: 'The park is full');
+            }
           },
           child: Text(
             s,
