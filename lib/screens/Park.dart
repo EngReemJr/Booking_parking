@@ -84,12 +84,10 @@ class ParkState extends State<Park> {
           title: Provider.of<AuthProvider>(context,listen: false).AllParkings![i]['name'],
           onTap: () async {
             /*await Provider.of<AuthProvider>(context,listen: false).ActiveBooking((Provider.of<AuthProvider>(context,listen: false)
-                .AllParkings![int.parse(txt.text)]['_id']).toString());
-
-            showAlertDialog(context, int.parse(txt.text)*/
+                .AllParkings![int.parse(txt.text)]['_id']).toString());*/
 
             await Provider.of<AuthProvider>(context,listen: false).ActiveBooking((Provider.of<AuthProvider>(context,listen: false)
-                .AllParkings![int.parse(txt.text)]['_id']).toString());
+                .AllParkings![i]['_id']));
 
             showAlertDialog(context, i);
 
@@ -111,11 +109,14 @@ class ParkState extends State<Park> {
               color: Color.fromARGB(255, 0, 0, 0),
             ),
           ),
-          onPressed: ()async {
-            await Provider.of<AuthProvider>(context,listen: false).ActiveBooking((Provider.of<AuthProvider>(context,listen: false)
+         onPressed: ()
+        //async
+         {
+           /* await Provider.of<AuthProvider>(context,listen: false).ActiveBooking((Provider.of<AuthProvider>(context,listen: false)
                 .AllParkings![int.parse(txt.text)]['_id']).toString());
 
-            showAlertDialog(context, int.parse(txt.text) );
+            showAlertDialog(context, int.parse(txt.text)
+             );*/
 
           },
         ),
@@ -224,8 +225,8 @@ class ParkState extends State<Park> {
             _currentIndex = index;
           });
           switch (index) {
-           /*case 0:
-              Navigator.pushNamed(context, '/');
+         /*  case 0:
+          Navigator.pushNamed(context, '/Settings');
               break;*/
           case 1:
             Navigator.pushNamed(context, '/MyOrderScreen');
@@ -234,7 +235,7 @@ class ParkState extends State<Park> {
               Navigator.pushNamed(context, '/Settings');
 
               break;
-           /* case 3:
+          /*  case 3:
               Navigator.pushNamed(context, '/Settings');
               break;*/
           }
@@ -360,7 +361,7 @@ class ParkState extends State<Park> {
                       ),
                     ),
 
-                    provider.ActiveBookNum>=15?
+                    provider.ActiveBookNum>=3?
                     text_wed(context, 'Busy', 0 , k):
                     text_wed(context, 'Free', 0 , k),
 
@@ -387,10 +388,10 @@ return
         color:
         (() {
 
-          if (provider.ActiveBookNum>=15) {
+          if (provider.ActiveBookNum>=3) {
             return Colors.red;
           }
-          else if (provider.ActiveBookNum>=9) {
+          else if (provider.ActiveBookNum>=2) {
             return Colors.yellow;
           }
           else {
@@ -401,7 +402,7 @@ return
 
 
           onPressed: () {
-            if (provider.ActiveBookNum<15) {
+            if (provider.ActiveBookNum<3) {
               provider.changeSelectedParking(
                   provider.AllParkings![k]['_id'].toString());
               Navigator.popAndPushNamed(context, '/Activity');

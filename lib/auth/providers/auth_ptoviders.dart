@@ -98,6 +98,8 @@ String selectedParking = '';
     prefs.setString('name', cu.displayName);
     prefs.setString('email', cu.email);
     prefs.setString('image', cu.imageUrl!);
+    prefs.setBool('isAdmin', cu.isAdmin);
+
     notifyListeners();
   }
   ResetLoginDetails() {
@@ -105,6 +107,8 @@ String selectedParking = '';
     prefs.setString('name', '');
     prefs.setString('email', '');
     prefs.setString('image', '');
+    prefs.setBool('isAdmin', false);
+
     notifyListeners();
   }
 
@@ -128,7 +132,13 @@ String selectedParking = '';
 
     return image;
   }
-  int getMessageNot(String Id) {
+  bool getLoginIsAdmin() {
+    bool isAdmin = prefs.getBool('isAdmin') ?? false;
+    return isAdmin;
+
+  }
+
+    int getMessageNot(String Id) {
     int intValue = prefs.getInt(Id) ?? 0;
 
     return intValue;
@@ -352,11 +362,11 @@ String selectedParking = '';
     });
 notifyListeners();
   }
-  ActiveBooking(String parkingId){
+  ActiveBooking(dynamic parkingId){
     ActiveBookNum = 0;
 AllBooking?.forEach((element) {
 
-  if(element['status']=='active'&&element['parking_id']==parkingId){
+  if(element['status']=='active'&&element['parking_id']==parkingId.toString()){
     ActiveBookNum = ActiveBookNum+1;
   }
   notifyListeners();

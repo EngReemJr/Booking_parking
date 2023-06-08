@@ -33,14 +33,14 @@ class _RplespageState extends State<Rplespage> {
                   decoration: getPageDecoration(),
                 ),
                 PageViewModel(
-                  title: 'Shop from your home and get fast delivery',
+                  title: 'Pay parking fees online from any where',
                   body: '',
                   image: buildImage("asset/images/06.jpg"),
                   //getPageDecoration, a method to customise the page style
                   decoration: getPageDecoration(),
                 ),
                 PageViewModel(
-                  title: 'please select if you are :',
+                  title: '',
                   // body: '',
                   image: buildImage("asset/images/08.jpg"),
                   // bodyWidget:  TextButton(

@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.chat_part">
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
 
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
@@ -7,6 +8,9 @@
         android:name="${applicationName}"
 
         android:icon="@mipmap/launcher_icon">
+       <meta-data
+           android:name="com.google.android.geo.API_KEY"
+           android:value="AIzaSyAzYd_Lgl4SJav462b0Ckbeqo161BUUoxQ" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

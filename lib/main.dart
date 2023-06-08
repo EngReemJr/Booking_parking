@@ -12,6 +12,7 @@ import 'package:chat_part/screens/PaymentPage.dart';
 import 'package:chat_part/screens/Reserve.dart';
 import 'package:chat_part/screens/Settings.dart';
 import 'package:chat_part/screens/loginScreen.dart';
+import 'package:chat_part/screens/theme_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:chat_part/screens/splash.dart';
@@ -110,12 +111,13 @@ class AppInit extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         navigatorKey: AppRouter.appRouter.navigatorKey,
-     /* theme: ThemeService().lightTheme,
+     theme: ThemeService().lightTheme,
       darkTheme: ThemeService().darkTheme,
-      themeMode: ThemeService().getThemeMode(),*/
-      title: "flutter Login UI",
+      themeMode: ThemeService().getThemeMode(),
+      title: "Booking Tracking",
       debugShowCheckedModeBanner: false,
-      home: SplachScreen(),
+      home:
+      SplachScreen(),
       //HomePage()
       //Activity(),
       routes: {

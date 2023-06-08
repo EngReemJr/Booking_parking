@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../auth/providers/auth_ptoviders.dart';
 //import '../common/theme_helper.dart';
@@ -172,40 +173,69 @@ class SettingsState extends State<Settings> {
             label: "Activity",
             backgroundColor: Colors.black,
           ),*/
+          provider.getLoginIsAdmin()==true?
           BottomNavigationBarItem(
-            icon: Icon(Icons.local_parking),
+            icon: Icon(Icons.home),
+            label: "Home",
+            backgroundColor: Colors.black,
+          ):
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_month_outlined),
             label: "Park",
             backgroundColor: Colors.black,
           ),
+
+          provider.getLoginIsAdmin()==true?
+            BottomNavigationBarItem(icon: Icon(null),
+            label: ''):
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_month_outlined),
             label: "Reserve",
             backgroundColor: Colors.black,
           ),
+
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: "Settings",
             backgroundColor: Colors.black,
           ),
         ],
-        onTap: (int index) {
+        onTap: (int index) async{
+
+          if(provider.getLoginIsAdmin()==false&&index!=1){
           setState(() {
             _currentIndex = index;
-          });
+          });}
           switch (index) {
             case 0:
+if(provider.getLoginIsAdmin()){
 
-              Navigator.pushNamed(context, '/Park');
+    String url = "http://192.168.1.166/parking/index.html";
+    var urllaunchable = await canLaunch(
+        url); //canLaunch is from url_launcher package
+    if (urllaunchable) {
+      await launch(
+          url); //launch is from url_launcher package to launch URL
+    } else {
+      print("URL can't be launched.");
+    }
 
-
+}else {
+  Navigator.pushNamed(context, '/Park');
+}
               break;
             case 1:
-              Navigator.pushNamed(context, '/MyOrderScreen');
+              if(provider.getLoginIsAdmin()==false) {
+                Navigator.pushNamed(context, '/MyOrderScreen');
+              }
+              else{
+                return;
+              }
 
               break;
             case 2:
 
-              Navigator.pushNamed(context, '/Settings');
+  Navigator.pushNamed(context, '/Settings');
 
               break;
              /* case 3:

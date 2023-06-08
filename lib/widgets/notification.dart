@@ -8,7 +8,10 @@ class notification_list extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
    return Container(
-     child: ListView.builder(
+     child:
+       Provider.of<AuthProvider>(context).notification_list.length ==0?
+           Center(child:Text('No notification yet')):
+     ListView.builder(
          itemCount: Provider.of<AuthProvider>(context).notification_list.length,
          itemBuilder: (BuildContext context, int index) {
            return ListTile(
